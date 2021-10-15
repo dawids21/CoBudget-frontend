@@ -18,6 +18,12 @@ import TopNav from '@/components/TopNav'
 export default {
   name: 'App',
   components: {TopNav},
+  watch: {
+    '$route': {
+      handler: (to) => document.title = to.meta.title || 'CoBudget',
+      immediate: true,
+    },
+  },
 }
 </script>
 

@@ -10,11 +10,13 @@ const routes = [
         path: '/',
         name: 'home',
         component: Home,
+        meta: {title: 'CoBudget'},
     },
     {
         path: '/calendar',
         name: 'calendar',
         component: Calendar,
+        meta: {title: 'Calendar - CoBudget'},
     },
 ]
 
