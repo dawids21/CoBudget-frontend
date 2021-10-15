@@ -20,3 +20,9 @@ export default {
   components: {TopNav},
 }
 </script>
+
+<style>
+html, body {
+  overflow-y: auto !important;
+}
+</style>
