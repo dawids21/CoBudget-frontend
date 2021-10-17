@@ -1,28 +1,15 @@
 <template>
   <v-container fluid>
-    <v-row justify="center">
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <DayCard/>
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <DayCard/>
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <DayCard/>
-      </v-col>
-      <v-col cols="12" sm="6" md="4" lg="2">
-        <DayCard/>
-      </v-col>
-    </v-row>
+    <Week :day="new Date()"/>
   </v-container>
 </template>
 
 <script>
-import DayCard from '@/components/calendar/DayCard'
+import Week from '@/components/calendar/Week'
 
 export default {
   name: "Calendar",
-  components: {DayCard},
+  components: {Week},
 }
 </script>
 
