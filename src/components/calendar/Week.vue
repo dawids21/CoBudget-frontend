@@ -1,7 +1,7 @@
 <template>
-  <v-row justify="center">
-    <v-col v-for="day in days" :key="day.getDay()" cols="12" sm="6" md="4" lg="2">
-      <DayCard :day="day"/>
+  <v-row justify="center" align="stretch" align-content="stretch">
+    <v-col v-for="day in days" :key="day.getDay()" cols="12" sm="6" md="4" lg="3">
+      <DayCard :day="day" :entries="entries.filter(entry => entry.date.getTime() === day.getTime())"/>
     </v-col>
   </v-row>
 </template>
@@ -14,6 +14,7 @@ export default {
   components: {DayCard},
   props: {
     day: Date,
+    entries: Array,
   },
   computed: {
     days() {
