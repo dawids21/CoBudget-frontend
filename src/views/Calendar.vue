@@ -1,7 +1,6 @@
 <template>
   <v-container fluid>
-    <Week v-if="entries.length !== 0" :day="new Date()" :entries="entries"/>
-    <h3 v-else>Loading...</h3>
+    <Week :day="new Date()"/>
   </v-container>
 </template>
 
@@ -11,11 +10,6 @@ import Week from '@/components/calendar/Week'
 export default {
   name: "Calendar",
   components: {Week},
-  data() {
-    return {
-      entries: [],
-    }
-  },
 }
 </script>
 
