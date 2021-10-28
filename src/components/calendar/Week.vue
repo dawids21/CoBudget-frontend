@@ -1,9 +1,10 @@
 <template>
-  <v-row justify="center" align="stretch" align-content="stretch">
+  <v-row v-if="entries.length !== 0" justify="center" align="stretch" align-content="stretch">
     <v-col v-for="day in days" :key="day.getDay()" cols="12" sm="6" md="4" lg="3">
       <DayCard :day="day" :entries="entries.filter(entry => entry.date.getTime() === day.getTime())"/>
     </v-col>
   </v-row>
+  <h3 v-else>Loading...</h3>
 </template>
 
 <script>
@@ -14,16 +15,33 @@ export default {
   components: {DayCard},
   props: {
     day: Date,
-    entries: Array,
+  },
+  data() {
+
+    function getStartDate() {
+      return new Date(this.day.getFullYear(), this.day.getMonth(), this.day.getDate() - (this.day.getDay() + 6) % 7)
+    }
+
+    return {
+      start: getStartDate.call(this),
+    }
   },
   computed: {
+
     days() {
-      const start = new Date(this.day.getFullYear(), this.day.getMonth(), this.day.getDate() - (this.day.getDay() + 6) % 7)
       return [0, 1, 2, 3, 4, 5, 6].map(n => {
-        const clone = new Date(start.getTime())
+        const clone = new Date(this.start.getTime())
         clone.setDate(clone.getDate() + n)
         return clone
       })
+    },
+
+    entries() {
+      function getEntries(start) {
+        return []
+      }
+
+      return getEntries(this.start)
     },
   },
 }
