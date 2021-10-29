@@ -9,6 +9,30 @@
 
 <script>
 import DayCard from '@/components/calendar/DayCard'
+import axios from 'axios'
+
+function getStartDate(day) {
+  return new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate() - (day.getDay() + 6) % 7))
+}
+
+async function getEntries(start) {
+  const end = new Date(start.getTime())
+  end.setDate(start.getDate() + 6)
+  const response = await axios.get('http://localhost:8080/api/entry', {
+    params: {
+      from: start.toISOString().split('T')[0],
+      to: end.toISOString().split('T')[0],
+    },
+  })
+  return response.data.map(item => {
+    return {
+      amount: item.amount,
+      date: new Date(item.date),
+      category: item.category ?? "Unknown",
+      subcategory: item.subcategory,
+    }
+  })
+}
 
 export default {
   name: "Week",
@@ -17,17 +41,12 @@ export default {
     day: Date,
   },
   data() {
-
-    function getStartDate() {
-      return new Date(this.day.getFullYear(), this.day.getMonth(), this.day.getDate() - (this.day.getDay() + 6) % 7)
-    }
-
     return {
-      start: getStartDate.call(this),
+      start: getStartDate(this.day),
+      entries: [],
     }
   },
   computed: {
-
     days() {
       return [0, 1, 2, 3, 4, 5, 6].map(n => {
         const clone = new Date(this.start.getTime())
@@ -35,14 +54,9 @@ export default {
         return clone
       })
     },
-
-    entries() {
-      function getEntries(start) {
-        return []
-      }
-
-      return getEntries(this.start)
-    },
+  },
+  mounted: async function () {
+    this.entries = await getEntries(this.start)
   },
 }
 </script>
