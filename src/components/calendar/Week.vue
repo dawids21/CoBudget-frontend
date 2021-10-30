@@ -15,14 +15,16 @@ function getStartDate(day) {
   return new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate() - (day.getDay() + 6) % 7))
 }
 
-async function getEntries(start) {
-  const end = new Date(start.getTime())
-  end.setDate(start.getDate() + 6)
-  const response = await axios.get('http://localhost:8080/api/entry', {
+async function getEntries() {
+  const end = new Date(this.start.getTime())
+  end.setDate(this.start.getDate() + 6)
+  const accessToken = this.$auth.getAccessToken()
+  const response = await axios.get('http://localhost:8081/api/entry', {
     params: {
-      from: start.toISOString().split('T')[0],
+      from: this.start.toISOString().split('T')[0],
       to: end.toISOString().split('T')[0],
     },
+    headers: {Authorization: `Bearer ${accessToken}`},
   })
   return response.data.map(item => {
     return {
@@ -56,7 +58,7 @@ export default {
     },
   },
   mounted: async function () {
-    this.entries = await getEntries(this.start)
+    this.entries = await getEntries.call(this)
   },
 }
 </script>
