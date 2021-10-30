@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import Calendar from '@/views/Calendar'
+import Login from '@/views/Login'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,12 @@ const routes = [
         name: 'calendar',
         component: Calendar,
         meta: {title: 'Calendar - CoBudget'},
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {title: 'Login - CoBudget'},
     },
 ]
 
