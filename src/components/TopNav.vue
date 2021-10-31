@@ -13,6 +13,16 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item v-if="authState.isAuthenticated" @click="logout">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              Logout
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" app>
@@ -26,6 +36,10 @@
                :to="{name: item.linkName}">
           <v-icon left>mdi-{{ item.icon }}</v-icon>
           {{ item.title }}
+        </v-btn>
+        <v-btn v-if="authState.isAuthenticated" @click="logout" color="white" text>
+          <v-icon>mdi-logout</v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -46,6 +60,11 @@ export default {
         {title: 'Login', linkName: 'login', icon: 'login', requiresAuth: false},
       ],
     }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.signOut()
+    },
   },
 }
 </script>
