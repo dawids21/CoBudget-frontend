@@ -38,7 +38,7 @@
           {{ item.title }}
         </v-btn>
         <v-btn v-if="authState.isAuthenticated" @click="logout" color="white" text>
-          <v-icon>mdi-logout</v-icon>
+          <v-icon left>mdi-logout</v-icon>
           Logout
         </v-btn>
       </v-toolbar-items>
