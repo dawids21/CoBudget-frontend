@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -8,7 +10,7 @@ import {oktaAuth} from '@/okta'
 Vue.config.productionTip = false
 Vue.use(OktaVue, {
     oktaAuth,
-    onAuthRequired: () => router.push('/login'),
+    onAuthRequired: () => router.push({name: 'login'}),
 })
 
 new Vue({
