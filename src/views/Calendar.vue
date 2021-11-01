@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <v-container fluid>
-      <Week :day="new Date()"/>
-    </v-container>
-
+  <v-container fluid>
+    <Week :day="new Date()"/>
     <v-btn
         class="ma-4"
         color="primary"
         fab
+        elevation="4"
         large
         fixed
         bottom
@@ -16,19 +14,26 @@
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-  </div>
+    <AddEntryDialog v-model="showDialog"/>
+  </v-container>
 </template>
 
 <script>
 import Week from '@/components/calendar/Week'
+import AddEntryDialog from '@/components/calendar/AddEntryDialog'
 
 export default {
   name: "Calendar",
-  components: {Week},
+  components: {AddEntryDialog, Week},
+  data() {
+    return {
+      showDialog: false,
+    }
+  },
 
   methods: {
     openAddEntryDialog() {
-      console.log("open")
+      this.showDialog = true
     },
   },
 }
