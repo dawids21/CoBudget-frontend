@@ -2,13 +2,24 @@
   <div>
     <v-navigation-drawer app v-model="drawer" absolute temporary left>
       <v-list>
-        <v-list-item v-for="item in items" :key="item.title" :to="{name: item.linkName}" link exact>
+        <v-list-item v-for="item in items" :key="item.title" v-if="authState.isAuthenticated === item.requiresAuth"
+                     :to="{name: item.linkName}" link exact>
           <v-list-item-icon>
             <v-icon>mdi-{{ item.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>
               {{ item.title }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item v-if="authState.isAuthenticated" @click="logout">
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              Logout
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -20,9 +31,15 @@
       <Logo/>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn v-for="item in items" :key="item.title" color="white" text :to="{name: item.linkName}">
+        <v-btn v-for="item in items" :key="item.title" v-if="authState.isAuthenticated === item.requiresAuth"
+               color="white" text
+               :to="{name: item.linkName}">
           <v-icon left>mdi-{{ item.icon }}</v-icon>
           {{ item.title }}
+        </v-btn>
+        <v-btn v-if="authState.isAuthenticated" @click="logout" color="white" text>
+          <v-icon left>mdi-logout</v-icon>
+          Logout
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -39,9 +56,15 @@ export default {
     return {
       drawer: false,
       items: [
-        {title: 'Calendar', linkName: 'calendar', icon: 'calendar'},
+        {title: 'Calendar', linkName: 'calendar', icon: 'calendar', requiresAuth: true},
+        {title: 'Login', linkName: 'login', icon: 'login', requiresAuth: false},
       ],
     }
+  },
+  methods: {
+    async logout() {
+      await this.$auth.signOut()
+    },
   },
 }
 </script>
