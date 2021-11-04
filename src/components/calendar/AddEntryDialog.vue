@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axiosInstance from '@/config'
 
 export default {
   name: "AddEntryDialog",
@@ -35,11 +35,7 @@ export default {
   },
   data() {
     return {
-      categories: [
-        {id: 1, name: "Food"},
-        {id: 2, name: "Clothes"},
-        {id: 3, name: "House"},
-      ],
+      categories: [],
       type: "expense",
       amount: 0,
       date: new Date().toISOString().split('T')[0],
@@ -59,19 +55,21 @@ export default {
   },
   methods: {
     async addEntry() {
-      const accessToken = this.$auth.getAccessToken()
-      await axios.post(
-          'http://localhost:8081/api/entry',
+      await axiosInstance.post(
+          '/api/entry',
           {
             amount: this.type === 'expense' ? -Math.abs(this.amount) : Math.abs(this.amount),
             date: this.date,
             categoryId: this.category,
             subcategory: this.subcategory,
           },
-          {headers: {Authorization: `Bearer ${accessToken}`}},
       )
       this.show = false
     },
+  },
+  mounted: async function () {
+    const response = await axiosInstance.get("/api/category")
+    this.categories = response.data
   },
 }
 </script>
