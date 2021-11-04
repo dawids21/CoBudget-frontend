@@ -35,11 +35,7 @@ export default {
   },
   data() {
     return {
-      categories: [
-        {id: 1, name: "Food"},
-        {id: 2, name: "Clothes"},
-        {id: 3, name: "House"},
-      ],
+      categories: [],
       type: "expense",
       amount: 0,
       date: new Date().toISOString().split('T')[0],
@@ -70,6 +66,10 @@ export default {
       )
       this.show = false
     },
+  },
+  mounted: async function () {
+    const response = await axiosInstance.get("/api/category")
+    this.categories = response.data
   },
 }
 </script>
