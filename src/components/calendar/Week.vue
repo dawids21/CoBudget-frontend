@@ -9,7 +9,7 @@
 
 <script>
 import DayCard from '@/components/calendar/DayCard'
-import axios from 'axios'
+import axiosInstance from '@/config'
 
 function getStartDate(day) {
   return new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate() - (day.getDay() + 6) % 7))
@@ -18,13 +18,11 @@ function getStartDate(day) {
 async function getEntries() {
   const end = new Date(this.start.getTime())
   end.setDate(this.start.getDate() + 6)
-  const accessToken = this.$auth.getAccessToken()
-  const response = await axios.get('http://localhost:8081/api/entry', {
+  const response = await axiosInstance.get('/api/entry', {
     params: {
       from: this.start.toISOString().split('T')[0],
       to: end.toISOString().split('T')[0],
     },
-    headers: {Authorization: `Bearer ${accessToken}`},
   })
   return response.data.map(item => {
     return {

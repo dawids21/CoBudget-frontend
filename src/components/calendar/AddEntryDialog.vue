@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axiosInstance from '@/config'
 
 export default {
   name: "AddEntryDialog",
@@ -59,16 +59,14 @@ export default {
   },
   methods: {
     async addEntry() {
-      const accessToken = this.$auth.getAccessToken()
-      await axios.post(
-          'http://localhost:8081/api/entry',
+      await axiosInstance.post(
+          '/api/entry',
           {
             amount: this.type === 'expense' ? -Math.abs(this.amount) : Math.abs(this.amount),
             date: this.date,
             categoryId: this.category,
             subcategory: this.subcategory,
           },
-          {headers: {Authorization: `Bearer ${accessToken}`}},
       )
       this.show = false
     },
