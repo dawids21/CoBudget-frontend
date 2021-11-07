@@ -1,10 +1,9 @@
 <template>
-  <v-row v-if="entries.length !== 0" justify="center" align="stretch" align-content="stretch">
-    <v-col v-for="day in days" :key="day.getDay()" cols="12" sm="6" md="4" lg="3">
+  <v-row align="stretch" align-content="stretch" justify="center">
+    <v-col v-for="day in days" :key="day.getDay()" cols="12" lg="3" md="4" sm="6">
       <DayCard :day="day" :entries="entries.filter(entry => entry.date.getTime() === day.getTime())"/>
     </v-col>
   </v-row>
-  <h3 v-else>Loading...</h3>
 </template>
 
 <script>
