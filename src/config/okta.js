@@ -1,14 +1,13 @@
 import OktaSignIn from '@okta/okta-signin-widget'
 import {OktaAuth} from '@okta/okta-auth-js'
 
-const yourOktaUri = 'https://dev-01647397.okta.com'
-// noinspection SpellCheckingInspection
-const clientId = '0oa24pfnd1D6oI3Ak5d7'
+const yourOktaUri = process.env.VUE_APP_OKTA_URI
+const clientId = process.env.VUE_APP_OKTA_CLIENT_ID
 
 const oktaSignIn = new OktaSignIn({
     baseUrl: yourOktaUri,
     clientId: clientId,
-    redirectUri: 'http://localhost:8080/login/callback',
+    redirectUri: process.env.VUE_APP_OKTA_REDIRECT_URI,
     authParams: {
         pkce: true,
         issuer: `${yourOktaUri}/oauth2/default`,
