@@ -8,7 +8,7 @@
 
 <script>
 import DayCard from '@/components/calendar/DayCard'
-import axiosInstance from '@/config'
+import axiosInstance from '@/config/axios'
 
 function getStartDate(day) {
   return new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate() - (day.getDay() + 6) % 7))

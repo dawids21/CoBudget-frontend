@@ -2,8 +2,8 @@ import axios from 'axios'
 import Vue from 'vue'
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8081",
-    timeout: 5000,
+    baseURL: process.env.VUE_APP_BACKEND_URL,
+    timeout: process.env.VUE_APP_BACKEND_TIMEOUT,
 })
 
 axiosInstance.interceptors.request.use(request => {
