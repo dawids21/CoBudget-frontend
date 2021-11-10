@@ -2,10 +2,10 @@
 
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
-import vuetify from './plugins/vuetify'
+import router from './config/router'
+import vuetify from './config/vuetify'
 import OktaVue from '@okta/okta-vue'
-import {oktaAuth} from '@/okta'
+import {oktaAuth} from '@/config/okta'
 
 Vue.config.productionTip = false
 Vue.use(OktaVue, {

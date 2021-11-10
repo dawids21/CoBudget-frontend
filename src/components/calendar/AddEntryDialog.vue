@@ -6,13 +6,13 @@
       </v-card-title>
       <v-card-text>
         <v-form>
-          <v-radio-group v-model="type" row mandatory>
-            <v-radio label="Expense" color="secondary" value="expense"/>
-            <v-radio label="Income" color="primary" value="income"/>
+          <v-radio-group v-model="type" mandatory row>
+            <v-radio color="secondary" label="Expense" value="expense"/>
+            <v-radio color="primary" label="Income" value="income"/>
           </v-radio-group>
-          <v-text-field v-model="amount" type="number" label="Amount"/>
-          <v-text-field v-model="date" type="date" label="Date"/>
-          <v-select v-model="category" :items="categories" item-value="id" item-text="name" label="Category"/>
+          <v-text-field v-model="amount" label="Amount" type="number"/>
+          <v-text-field v-model="date" label="Date" type="date"/>
+          <v-select v-model="category" :items="categories" item-text="name" item-value="id" label="Category"/>
           <v-text-field v-model="subcategory" label="Subcategory"/>
         </v-form>
       </v-card-text>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axiosInstance from '@/config'
+import axiosInstance from '@/config/axios'
 
 export default {
   name: "AddEntryDialog",

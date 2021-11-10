@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid class="login">
+  <v-container class="login" fluid>
     <div id="okta-signin-container"></div>
   </v-container>
 </template>
 
 <script>
 import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css'
-import {oktaSignIn} from '@/okta'
+import {oktaSignIn} from '@/config/okta'
 
 export default {
   name: 'Login',
