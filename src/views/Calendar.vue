@@ -14,7 +14,7 @@
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-    <AddEntryDialog v-model="showDialog"/>
+    <AddEntryDialog v-model="showDialog" @add-entry="refreshEntries"/>
   </v-container>
 </template>
 
@@ -70,6 +70,10 @@ export default {
           subcategory: item.subcategory,
         }
       })
+    },
+
+    async refreshEntries() {
+      this.entries = await this.getEntries()
     },
   },
   mounted: async function () {

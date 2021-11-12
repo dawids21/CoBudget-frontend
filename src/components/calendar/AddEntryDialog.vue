@@ -66,7 +66,7 @@ export default {
 
       const entry = this.getEntry()
       try {
-        const response = await axiosInstance.post('/api/entry', entry)
+        await axiosInstance.post('/api/entry', entry)
         this.$emit('add-entry')
       } catch (e) {
 
