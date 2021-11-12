@@ -54,16 +54,18 @@ export default {
     },
   },
   methods: {
+    getEntry() {
+      return {
+        amount: this.type === 'expense' ? -Math.abs(this.amount) : Math.abs(this.amount),
+        date: this.date,
+        categoryId: this.category,
+        subcategory: this.subcategory,
+      }
+    },
     async addEntry() {
-      await axiosInstance.post(
-          '/api/entry',
-          {
-            amount: this.type === 'expense' ? -Math.abs(this.amount) : Math.abs(this.amount),
-            date: this.date,
-            categoryId: this.category,
-            subcategory: this.subcategory,
-          },
-      )
+
+      const entry = this.getEntry()
+      await axiosInstance.post('/api/entry', entry)
       this.show = false
     },
   },
