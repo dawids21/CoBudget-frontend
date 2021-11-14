@@ -60,8 +60,7 @@ export default {
       return {
         amount: this.type === 'expense' ? -Math.abs(this.amount) : Math.abs(this.amount),
         date: this.date,
-        categoryId: this.category,
-        subcategory: this.subcategory,
+        categoryId: this.subcategory ?? this.category,
       }
     },
     async addEntry() {
