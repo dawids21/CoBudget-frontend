@@ -1,12 +1,15 @@
 <template>
   <v-container fluid>
-    <h1>Settings</h1>
+    <CategoryList/>
   </v-container>
 </template>
 
 <script>
+import CategoryList from '@/components/settings/CategoryList'
+
 export default {
   name: "Settings",
+  components: {CategoryList},
 }
 </script>
 
