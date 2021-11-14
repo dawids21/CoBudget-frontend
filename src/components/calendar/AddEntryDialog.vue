@@ -12,8 +12,9 @@
           </v-radio-group>
           <v-text-field v-model="amount" label="Amount" type="number"/>
           <v-text-field v-model="date" label="Date" type="date"/>
-          <v-select v-model="category" :items="categories" item-text="name" item-value="id" label="Category"/>
-          <v-text-field v-model="subcategory" label="Subcategory"/>
+          <v-select v-model="category" :items="categories" item-text="name" item-value="id" label="Category"
+                    @change="getSubcategories"/>
+          <v-select v-model="subcategory" :items="subcategories" item-text="name" item-value="id" label="Subcategory"/>
         </v-form>
       </v-card-text>
       <v-card-actions>
@@ -36,11 +37,12 @@ export default {
   data() {
     return {
       categories: [],
+      subcategories: [],
       type: "expense",
       amount: 0,
       date: new Date().toISOString().split('T')[0],
       category: null,
-      subcategory: "",
+      subcategory: null,
     }
   },
   computed: {
@@ -72,6 +74,11 @@ export default {
 
       }
       this.show = false
+    },
+    async getSubcategories() {
+      this.subcategory = null
+      const response = await axiosInstance.get(`/api/category/${this.category}/subcategory`)
+      this.subcategories = response.data
     },
   },
   mounted: async function () {
