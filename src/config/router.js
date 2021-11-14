@@ -4,6 +4,7 @@ import Home from '@/views/Home'
 import Calendar from '@/views/Calendar'
 import Login from '@/views/Login'
 import {LoginCallback} from '@okta/okta-vue'
+import Settings from '@/views/Settings'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,15 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'Calendar - CoBudget',
+        },
+    },
+    {
+        path: '/settings',
+        name: 'settings',
+        component: Settings,
+        meta: {
+            requiresAuth: true,
+            title: 'Settings - CoBudget',
         },
     },
     {
