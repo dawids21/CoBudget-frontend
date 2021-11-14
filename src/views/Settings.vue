@@ -1,6 +1,13 @@
 <template>
   <v-container fluid>
-    <CategoryList/>
+    <v-expansion-panels>
+      <v-expansion-panel>
+        <v-expansion-panel-header class="text-h6">Categories</v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <CategoryList/>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>
 
