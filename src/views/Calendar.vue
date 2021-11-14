@@ -66,8 +66,7 @@ export default {
         return {
           amount: item.amount,
           date: new Date(item.date),
-          category: item.category ?? "Unknown",
-          subcategory: item.subcategory,
+          category: item.category !== null ? `${item.category} - ${item.subcategory}` : item.subcategory,
         }
       })
     },
