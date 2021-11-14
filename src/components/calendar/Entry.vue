@@ -5,7 +5,7 @@
             :class="{'primary--text': data.amount > 0, 'secondary--text': data.amount <= 0}">{{
           data.amount
         }}$</span>
-      <span class="text-center">{{ data.category }} - {{ data.subcategory }}</span>
+      <span class="text-center">{{ data.category }}</span>
     </v-container>
   </v-sheet>
 </template>
