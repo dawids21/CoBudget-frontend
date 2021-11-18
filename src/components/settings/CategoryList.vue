@@ -42,17 +42,25 @@ export default {
       if (!this.newCategory) {
         return
       }
-      console.log(`name: ${this.newCategory}`)
+      const category = {
+        name: this.newCategory,
+        parentId: null,
+      }
+      await axiosInstance.post('/api/category', category)
       this.newCategory = null
-      await this.getCategories()
+      this.categories = await this.getCategories()
     },
     async addSubcategory(parentId) {
       if (!this.newSubcategory) {
         return
       }
-      console.log(`name: ${this.newSubcategory}, parentId: ${parentId}`)
+      const category = {
+        name: this.newSubcategory,
+        parentId,
+      }
+      await axiosInstance.post('/api/category', category)
       this.newSubcategory = null
-      await this.getCategories()
+      this.categories = await this.getCategories()
     },
     async getCategories() {
       const response = await axiosInstance.get('/api/category/all')
