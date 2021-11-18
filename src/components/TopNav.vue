@@ -57,6 +57,7 @@ export default {
       drawer: false,
       items: [
         {title: 'Calendar', linkName: 'calendar', icon: 'calendar', requiresAuth: true},
+        {title: 'Settings', linkName: 'settings', icon: 'cog-outline', requiresAuth: true},
         {title: 'Login', linkName: 'login', icon: 'login', requiresAuth: false},
       ],
     }
