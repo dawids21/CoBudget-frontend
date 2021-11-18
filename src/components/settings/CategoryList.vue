@@ -26,66 +26,41 @@
 </template>
 
 <script>
+import axiosInstance from '@/config/axios'
+
 export default {
   name: "CategoryList",
   data() {
     return {
-      categories: this.getCategories(),
+      categories: [],
       newCategory: null,
       newSubcategory: null,
     }
   },
   methods: {
-    addCategory() {
+    async addCategory() {
       if (!this.newCategory) {
         return
       }
       console.log(`name: ${this.newCategory}`)
       this.newCategory = null
-      this.getCategories()
+      await this.getCategories()
     },
-    addSubcategory(parentId) {
+    async addSubcategory(parentId) {
       if (!this.newSubcategory) {
         return
       }
       console.log(`name: ${this.newSubcategory}, parentId: ${parentId}`)
       this.newSubcategory = null
-      this.getCategories()
+      await this.getCategories()
     },
-    getCategories() {
-      return [
-        {
-          id: 1,
-          name: 'Food',
-          subcategories: [
-            {
-              id: 3,
-              name: 'Home',
-            },
-            {
-              id: 4,
-              name: 'Work',
-            },
-          ],
-        },
-        {
-          id: 2,
-          name: 'Clothes',
-          subcategories: [
-            {
-              id: 5,
-              name: 'Shirts',
-            },
-            {
-              id: 6,
-              name: 'Shoes',
-            },
-          ],
-        },
-      ]
+    async getCategories() {
+      const response = await axiosInstance.get('/api/category/all')
+      return response.data
     },
-
-
+  },
+  async mounted() {
+    this.categories = await this.getCategories()
   },
 }
 </script>
