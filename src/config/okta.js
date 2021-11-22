@@ -14,6 +14,9 @@ const oktaSignIn = new OktaSignIn({
         display: 'page',
         scopes: ['openid', 'profile', 'email'],
     },
+    features: {
+        registration: true,
+    },
 })
 
 const oktaAuth = new OktaAuth({
