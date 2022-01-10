@@ -1,14 +1,24 @@
 <template>
   <v-container fluid>
-    <Week :day="new Date()" :days="days" :entries="entries"/>
+    <v-row align="center" justify="center">
+      <v-col class="text-center">
+        <ChangeWeek :next-callback="nextWeek" :previous-callback="previousWeek"/>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <Week v-touch="{left: () => nextWeek(), right: () => previousWeek()}" :day="new Date()" :days="days"
+              :entries="entries"/>
+      </v-col>
+    </v-row>
     <v-btn
+        bottom
         class="ma-4"
         color="primary"
-        fab
         elevation="4"
-        large
+        fab
         fixed
-        bottom
+        large
         right
         @click.stop="openAddEntryDialog"
     >
@@ -22,10 +32,11 @@
 import Week from '@/components/calendar/Week'
 import AddEntryDialog from '@/components/calendar/AddEntryDialog'
 import axiosInstance from '@/config/axios'
+import ChangeWeek from '@/components/calendar/ChangeWeek'
 
 export default {
   name: "Calendar",
-  components: {AddEntryDialog, Week},
+  components: {ChangeWeek, AddEntryDialog, Week},
   data() {
     return {
       showDialog: false,
@@ -73,6 +84,18 @@ export default {
 
     async refreshEntries() {
       this.entries = await this.getEntries()
+    },
+
+    previousWeek() {
+      const result = new Date()
+      result.setDate(this.start.getDate() - 7)
+      this.start = result
+    },
+
+    nextWeek() {
+      const result = new Date()
+      result.setDate(this.start.getDate() + 7)
+      this.start = result
     },
   },
   mounted: async function () {
