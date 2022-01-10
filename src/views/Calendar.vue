@@ -7,7 +7,8 @@
     </v-row>
     <v-row>
       <v-col>
-        <Week :day="new Date()" :days="days" :entries="entries"/>
+        <Week v-touch="{left: () => nextWeek(), right: () => previousWeek()}" :day="new Date()" :days="days"
+              :entries="entries"/>
       </v-col>
     </v-row>
     <v-btn
