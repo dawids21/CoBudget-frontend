@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-navigation-drawer app v-model="drawer" absolute temporary left>
+    <v-navigation-drawer v-model="drawer" app fixed left temporary>
       <v-list>
-        <v-list-item v-for="item in items" :key="item.title" v-if="authState.isAuthenticated === item.requiresAuth"
-                     :to="{name: item.linkName}" link exact>
+        <v-list-item v-for="item in items" v-if="authState.isAuthenticated === item.requiresAuth" :key="item.title"
+                     :to="{name: item.linkName}" exact link>
           <v-list-item-icon>
             <v-icon>mdi-{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -25,19 +25,19 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar color="primary" app>
+    <v-app-bar app color="primary">
       <v-app-bar-nav-icon class="white--text hidden-sm-and-up" @click="drawer = !drawer">
       </v-app-bar-nav-icon>
       <Logo/>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn v-for="item in items" :key="item.title" v-if="authState.isAuthenticated === item.requiresAuth"
-               color="white" text
-               :to="{name: item.linkName}">
+        <v-btn v-for="item in items" v-if="authState.isAuthenticated === item.requiresAuth" :key="item.title"
+               :to="{name: item.linkName}" color="white"
+               text>
           <v-icon left>mdi-{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
-        <v-btn v-if="authState.isAuthenticated" @click="logout" color="white" text>
+        <v-btn v-if="authState.isAuthenticated" color="white" text @click="logout">
           <v-icon left>mdi-logout</v-icon>
           Logout
         </v-btn>
