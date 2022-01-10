@@ -2,12 +2,7 @@
   <v-container fluid>
     <v-row align="center" justify="center">
       <v-col class="text-center">
-        <v-btn class="mr-2" color="primary" elevation="4" @click="previousWeek">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <v-btn class="ml-2" color="primary" elevation="4" @click="nextWeek">
-          <v-icon>mdi-arrow-right</v-icon>
-        </v-btn>
+        <ChangeWeek :next-callback="nextWeek" :previous-callback="previousWeek"/>
       </v-col>
     </v-row>
     <v-row>
@@ -36,10 +31,11 @@
 import Week from '@/components/calendar/Week'
 import AddEntryDialog from '@/components/calendar/AddEntryDialog'
 import axiosInstance from '@/config/axios'
+import ChangeWeek from '@/components/calendar/ChangeWeek'
 
 export default {
   name: "Calendar",
-  components: {AddEntryDialog, Week},
+  components: {ChangeWeek, AddEntryDialog, Week},
   data() {
     return {
       showDialog: false,
