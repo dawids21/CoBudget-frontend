@@ -1,14 +1,28 @@
 <template>
   <v-container fluid>
-    <Week :day="new Date()" :days="days" :entries="entries"/>
+    <v-row align="center" justify="center">
+      <v-col class="text-center">
+        <v-btn class="mr-2" color="primary" elevation="4" @click="previousWeek">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+        <v-btn class="ml-2" color="primary" elevation="4" @click="nextWeek">
+          <v-icon>mdi-arrow-right</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <Week :day="new Date()" :days="days" :entries="entries"/>
+      </v-col>
+    </v-row>
     <v-btn
+        bottom
         class="ma-4"
         color="primary"
-        fab
         elevation="4"
-        large
+        fab
         fixed
-        bottom
+        large
         right
         @click.stop="openAddEntryDialog"
     >
@@ -73,6 +87,18 @@ export default {
 
     async refreshEntries() {
       this.entries = await this.getEntries()
+    },
+
+    previousWeek() {
+      const result = new Date()
+      result.setDate(this.start.getDate() - 7)
+      this.start = result
+    },
+
+    nextWeek() {
+      const result = new Date()
+      result.setDate(this.start.getDate() + 7)
+      this.start = result
     },
   },
   mounted: async function () {
