@@ -25,6 +25,12 @@
       <v-icon>mdi-plus</v-icon>
     </v-btn>
     <AddEntryDialog v-model="showDialog" @add-entry="refreshEntries"/>
+    <v-snackbar v-model="snackbar" :color="snackbarColor">
+      {{ this.snackbarMessage }}
+      <v-btn left text @click="this.snackbar = false">
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -42,6 +48,9 @@ export default {
       showDialog: false,
       start: this.getStartDate(new Date()),
       entries: [],
+      snackbar: false,
+      snackbarColor: "",
+      snackbarMessage: '',
     }
   },
 
@@ -96,6 +105,12 @@ export default {
       const result = new Date()
       result.setDate(this.start.getDate() + 7)
       this.start = result
+    },
+
+    showSnackbar(message, color) {
+      this.snackbarMessage = message
+      this.snackbarColor = color
+      this.snackbar = true
     },
   },
   mounted: async function () {
