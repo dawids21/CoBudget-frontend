@@ -33,6 +33,7 @@ export default {
   name: "AddEntryDialog",
   props: {
     value: Boolean,
+    showSnackbar: Function,
   },
   data() {
     return {
@@ -69,8 +70,9 @@ export default {
       try {
         await axiosInstance.post('/api/entry', entry)
         this.$emit('add-entry')
+        this.showSnackbar("Added entry", "primary")
       } catch (e) {
-
+        this.showSnackbar("Problem with adding entry", "secondary darken-1")
       }
       this.show = false
     },
