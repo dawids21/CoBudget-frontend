@@ -24,12 +24,14 @@
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-    <AddEntryDialog v-model="showDialog" @add-entry="refreshEntries"/>
-    <v-snackbar v-model="snackbar" :color="snackbarColor">
+    <AddEntryDialog v-model="showDialog" :show-snackbar="showSnackbar" @add-entry="refreshEntries"/>
+    <v-snackbar v-model="snackbar" :color="snackbarColor" timeout="3000">
       {{ this.snackbarMessage }}
-      <v-btn left text @click="this.snackbar = false">
-        Close
-      </v-btn>
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-container>
 </template>
