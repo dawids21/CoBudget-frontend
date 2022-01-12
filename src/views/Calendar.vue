@@ -97,16 +97,18 @@ export default {
       this.entries = await this.getEntries()
     },
 
-    previousWeek() {
+    async previousWeek() {
       const result = new Date()
       result.setDate(this.start.getDate() - 7)
-      this.start = result
+      this.start = this.getStartDate(result)
+      this.entries = await this.getEntries()
     },
 
-    nextWeek() {
+    async nextWeek() {
       const result = new Date()
       result.setDate(this.start.getDate() + 7)
-      this.start = result
+      this.start = this.getStartDate(result)
+      this.entries = await this.getEntries()
     },
 
     showSnackbar(message, color) {
