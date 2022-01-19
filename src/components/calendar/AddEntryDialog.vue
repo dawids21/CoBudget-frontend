@@ -5,22 +5,25 @@
         Add entry
       </v-card-title>
       <v-card-text>
-        <v-form>
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-radio-group v-model="type" mandatory row>
             <v-radio color="secondary" label="Expense" value="expense"/>
             <v-radio color="primary" label="Income" value="income"/>
           </v-radio-group>
-          <v-text-field v-model="amount" label="Amount" type="number"/>
+          <v-text-field v-model="amount" :rules="rules.amountRules" label="Amount" required type="number"/>
           <v-text-field v-model="date" label="Date" type="date"/>
-          <v-select v-model="category" :items="categories" item-text="name" item-value="id" label="Category"
-                    @change="getSubcategories"/>
-          <v-select v-model="subcategory" :items="subcategories" item-text="name" item-value="id" label="Subcategory"/>
+          <v-select v-model="category" :items="categories" :rules="[v => !!v || 'Category is required']"
+                    item-text="name" item-value="id"
+                    label="Category" @change="getSubcategories"/>
+          <v-select v-model="subcategory" :items="subcategories" :rules="[v => !!v || 'Subcategory is required']"
+                    item-text="name" item-value="id"
+                    label="Subcategory"/>
         </v-form>
       </v-card-text>
       <v-card-actions>
         <v-btn color="secondary" @click.stop="show = false">Close</v-btn>
         <v-spacer/>
-        <v-btn color="primary" type="submit" @click="addEntry">Add</v-btn>
+        <v-btn :disabled="!valid" color="primary" type="submit" @click="addEntry">Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -37,10 +40,14 @@ export default {
   },
   data() {
     return {
+      valid: true,
+      rules: {
+        amountRules: [v => !!v || 'Amount is required', v => v > 0 || 'Amount must be greater than 0'],
+      },
       categories: [],
       subcategories: [],
       type: "expense",
-      amount: 0,
+      amount: null,
       date: new Date().toISOString().split('T')[0],
       category: null,
       subcategory: null,
@@ -65,7 +72,9 @@ export default {
       }
     },
     async addEntry() {
-
+      if (!this.$refs.form.validate()) {
+        return
+      }
       const entry = this.getEntry()
       try {
         await axiosInstance.post('/api/entry', entry)
