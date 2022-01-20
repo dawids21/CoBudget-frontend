@@ -76,8 +76,12 @@ export default {
       const response = await axiosInstance.get('/api/category/all')
       return response.data
     },
-    deleteCategory(categoryId) {
-      console.log("Deleted", categoryId)
+    async deleteCategory(categoryId) {
+      const response = await axiosInstance.delete(`/api/category/${categoryId}`)
+      if (response.status !== 204) {
+        return
+      }
+      this.categories = await this.getCategories()
     },
   },
   async mounted() {
