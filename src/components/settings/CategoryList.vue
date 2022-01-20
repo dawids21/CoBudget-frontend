@@ -3,9 +3,19 @@
     <v-list-group v-for="category in categories" :key="category.id" no-action prepend-icon="mdi-circle-medium">
       <template v-slot:activator>
         <v-list-item-title class="text-subtitle-1" v-text="category.name"></v-list-item-title>
+        <v-list-item-action>
+          <v-btn icon @click.stop="deleteCategory(category.id)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item-action>
       </template>
       <v-list-item v-for="subcategory in category.subcategories" :key="subcategory.id">
         <v-list-item-title class="text-subtitle-2" v-text="subcategory.name"></v-list-item-title>
+        <v-list-item-action>
+          <v-btn icon @click="deleteCategory(subcategory.id)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item-action>
       </v-list-item>
       <v-list-item>
         <v-list-item-title>
@@ -65,6 +75,13 @@ export default {
     async getCategories() {
       const response = await axiosInstance.get('/api/category/all')
       return response.data
+    },
+    async deleteCategory(categoryId) {
+      const response = await axiosInstance.delete(`/api/category/${categoryId}`)
+      if (response.status !== 204) {
+        return
+      }
+      this.categories = await this.getCategories()
     },
   },
   async mounted() {
