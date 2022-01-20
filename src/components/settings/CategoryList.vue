@@ -4,13 +4,17 @@
       <template v-slot:activator>
         <v-list-item-title class="text-subtitle-1" v-text="category.name"></v-list-item-title>
         <v-list-item-action>
-          <v-btn @click.stop="deleteCategory(category.id)">delete</v-btn>
+          <v-btn icon @click.stop="deleteCategory(category.id)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-list-item-action>
       </template>
       <v-list-item v-for="subcategory in category.subcategories" :key="subcategory.id">
         <v-list-item-title class="text-subtitle-2" v-text="subcategory.name"></v-list-item-title>
         <v-list-item-action>
-          <v-btn @click="deleteCategory(subcategory.id)">delete</v-btn>
+          <v-btn icon @click="deleteCategory(subcategory.id)">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-list-item-action>
       </v-list-item>
       <v-list-item>
