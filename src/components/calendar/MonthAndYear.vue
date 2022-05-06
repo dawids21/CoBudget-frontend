@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     toDisplay() {
-      return "May 2022"
+      return this.date.toLocaleDateString('default', {month: 'long', year: 'numeric'})
     }
   }
 }
