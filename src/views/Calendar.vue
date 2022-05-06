@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
     <v-row align="center" justify="center">
+      <MonthAndYear :date="start"/>
+    </v-row>
+    <v-row align="center" justify="center">
       <v-col class="text-center">
         <ChangeWeek :next-callback="nextWeek" :previous-callback="previousWeek"/>
       </v-col>
@@ -41,10 +44,11 @@ import Week from '@/components/calendar/Week'
 import AddEntryDialog from '@/components/calendar/AddEntryDialog'
 import axiosInstance from '@/config/axios'
 import ChangeWeek from '@/components/calendar/ChangeWeek'
+import MonthAndYear from '@/components/calendar/MonthAndYear'
 
 export default {
   name: "Calendar",
-  components: {ChangeWeek, AddEntryDialog, Week},
+  components: {MonthAndYear, ChangeWeek, AddEntryDialog, Week},
   data() {
     return {
       showDialog: false,
