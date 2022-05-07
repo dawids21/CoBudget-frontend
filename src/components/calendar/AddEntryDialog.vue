@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show">
+  <v-dialog v-model="show" :fullscreen="this.$vuetify.breakpoint.mobile" max-width="50em" width="50%">
     <v-card>
       <v-card-title>
         Add entry
