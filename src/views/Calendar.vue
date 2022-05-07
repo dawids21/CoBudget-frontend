@@ -102,15 +102,17 @@ export default {
     },
 
     async previousWeek() {
-      const result = new Date()
-      result.setDate(this.start.getDate() - 7)
+      const result = new Date(this.start.getTime())
+      result.setDate(result.getDate() - 7)
+      console.log(result)
       this.start = this.getStartDate(result)
       this.entries = await this.getEntries()
     },
 
     async nextWeek() {
-      const result = new Date()
-      result.setDate(this.start.getDate() + 7)
+      const result = new Date(this.start.getTime())
+      result.setDate(result.getDate() + 7)
+      console.log(result)
       this.start = this.getStartDate(result)
       this.entries = await this.getEntries()
     },
