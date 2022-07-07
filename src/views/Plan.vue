@@ -2,7 +2,7 @@
   <div class="d-flex flex-column align-center justify-start" style="height: 100%">
     <MonthAndYear :date="start"/>
     <ChangeWeek :next-callback="nextMonth" :previous-callback="previousMonth" class="ma-3"/>
-    <NotPlannedInfo :month="monthName"/>
+    <NotPlannedInfo v-if="!isPlanned" :month="monthName"/>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       start: this.getStartDate(new Date()),
+      isPlanned: false,
     }
   },
 
