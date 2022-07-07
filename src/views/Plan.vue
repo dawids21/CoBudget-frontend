@@ -1,27 +1,29 @@
 <template>
-  <v-container fluid>
-    <v-row align="center" justify="center">
-      <MonthAndYear :date="start"/>
-    </v-row>
-    <v-row align="center" justify="center">
-      <v-col class="text-center">
-        <ChangeWeek :next-callback="nextMonth" :previous-callback="previousMonth"/>
-      </v-col>
-    </v-row>
-  </v-container>
+  <div class="d-flex flex-column align-center justify-start" style="height: 100%">
+    <MonthAndYear :date="start"/>
+    <ChangeWeek :next-callback="nextMonth" :previous-callback="previousMonth" class="ma-3"/>
+    <NotPlannedInfo :month="monthName"/>
+  </div>
 </template>
 
 <script>
 import ChangeWeek from '@/components/calendar/ChangeWeek'
 import MonthAndYear from '@/components/calendar/MonthAndYear'
+import NotPlannedInfo from '@/components/plan/NotPlannedInfo'
 
 export default {
   name: "Plan",
-  components: {MonthAndYear, ChangeWeek},
+  components: {NotPlannedInfo, MonthAndYear, ChangeWeek},
   data() {
     return {
       start: this.getStartDate(new Date()),
     }
+  },
+
+  computed: {
+    monthName() {
+      return this.start.toLocaleDateString('default', {month: 'long'})
+    },
   },
 
   methods: {
@@ -44,6 +46,3 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
