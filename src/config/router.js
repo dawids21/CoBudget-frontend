@@ -5,6 +5,7 @@ import Calendar from '@/views/Calendar'
 import Login from '@/views/Login'
 import {LoginCallback} from '@okta/okta-vue'
 import Settings from '@/views/Settings'
+import Plan from '@/views/Plan'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,12 @@ const routes = [
         name: 'loginCallback',
         component: LoginCallback,
         meta: {title: 'Login - CoBudget'},
+    },
+    {
+        path: '/plan',
+        name: 'plan',
+        component: Plan,
+        meta: {title: 'Plan - CoBudget'},
     },
 ]
 
