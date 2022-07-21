@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
+import AppRoutes from "./components/Routes/AppRoutes";
 
 function App() {
-  return <Typography>Let's get started!</Typography>;
+  return <AppRoutes />;
 }
 
 export default App;
