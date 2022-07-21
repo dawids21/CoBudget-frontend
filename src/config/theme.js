@@ -21,6 +21,12 @@ const theme = createTheme({
     warning: {
       main: "#ffc107",
     },
+    white: {
+      main: "#ffffff",
+    },
+    black: {
+      main: "#000000",
+    },
   },
 });
 
