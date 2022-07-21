@@ -3,9 +3,9 @@ import { Security } from "@okta/okta-react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import AppRoutes from "./components/Routes/AppRoutes";
-import config from "./config";
+import auth from "./config/auth";
 
-const oktaAuth = new OktaAuth(config.oidc);
+const oktaAuth = new OktaAuth(auth);
 
 const App = () => {
   const navigate = useNavigate();
