@@ -10,12 +10,7 @@ const MonthAndYear = (props) => {
   });
   return (
     <Box>
-      <Typography
-        variant="h5"
-        color="primary.dark"
-        align="center"
-        sx={{ mb: 2 }}
-      >
+      <Typography variant="h5" color="primary.dark" sx={{ mb: 2 }}>
         {formatted}
       </Typography>
     </Box>
