@@ -1,8 +1,7 @@
-import { TodayOutlined } from "@mui/icons-material";
-import { Grid, Box } from "@mui/material";
-import React, { useState } from "react";
+import { Box } from "@mui/material";
+import { useOktaAuth } from "@okta/okta-react";
+import React, { useEffect, useState } from "react";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
-import DayCard from "../components/Calendar/DayCard";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
 import Week from "../components/Calendar/Week";
 
@@ -18,6 +17,9 @@ const getStartDate = (day) => {
 
 const Calendar = () => {
   const [start, setStart] = useState(getStartDate(new Date()));
+  const [entries, setEntries] = useState([]);
+  const { authState } = useOktaAuth();
+  const { accessToken } = authState.accessToken;
 
   const days = [0, 1, 2, 3, 4, 5, 6].map((n) => {
     const clone = new Date(start.getTime());
@@ -44,20 +46,39 @@ const Calendar = () => {
     Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
   );
 
-  const entries = [
-    {
-      id: 1,
-      amount: -5,
-      date: new Date(Date.UTC(2022, 6, 25)),
-      category: "Food - Home",
-    },
-    {
-      id: 2,
-      amount: 100,
-      date: new Date(Date.UTC(2022, 6, 27)),
-      category: "Income - Work",
-    },
-  ];
+  useEffect(() => {
+    const end = new Date(start.getTime());
+    end.setDate(start.getDate() + 6);
+    const sendRequest = async () => {
+      const response = await fetch(
+        "http://localhost:8080/api/entry?" +
+          new URLSearchParams({
+            from: start.toISOString().split("T")[0],
+            to: end.toISOString().split("T")[0],
+          }),
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      const entriesData = data.map((item) => ({
+        id: item.id,
+        amount: item.amount,
+        date: new Date(item.date),
+        category:
+          item.category !== null
+            ? `${item.category} - ${item.subcategory}`
+            : item.subcategory,
+      }));
+
+      setEntries(entriesData);
+    };
+    sendRequest();
+  }, [start, accessToken]);
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
