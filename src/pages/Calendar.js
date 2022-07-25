@@ -1,6 +1,7 @@
 import { Grid, Box } from "@mui/material";
 import React from "react";
 import DayCard from "../components/Calendar/DayCard";
+import MonthAndYear from "../components/Calendar/MonthAndYear";
 import Week from "../components/Calendar/Week";
 
 const Calendar = () => {
@@ -38,6 +39,7 @@ const Calendar = () => {
   ];
   return (
     <Box sx={{ mt: 2, mx: 4 }}>
+      <MonthAndYear date={start} />
       <Week day={new Date()} days={days} entries={entries} />
     </Box>
   );
