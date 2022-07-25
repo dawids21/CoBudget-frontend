@@ -11,25 +11,47 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
 import Drawer from "./Drawer";
+import { useOktaAuth } from "@okta/okta-react";
+import { useNavigate } from "react-router-dom";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
-const AppBar = (props) => {
+const AppBar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDrawerButtonVisible = useMediaQuery((theme) =>
     theme.breakpoints.down("sm")
   );
+  const { authState, oktaAuth } = useOktaAuth();
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setDrawerOpen((prevDrawerOpen) => !prevDrawerOpen);
   };
 
-  const buttons = [
-    {
-      name: "Login",
-      action: () => console.log("Login"),
-    },
-  ];
+  let buttons;
+  if (!authState?.isAuthenticated) {
+    buttons = [
+      {
+        name: "Login",
+        action: () => oktaAuth.signInWithRedirect(),
+      },
+    ];
+  } else {
+    buttons = [
+      {
+        name: "Home",
+        action: () => navigate("/"),
+      },
+      {
+        name: "Calendar",
+        action: () => navigate("/calendar"),
+      },
+      {
+        name: "Logout",
+        action: () => oktaAuth.signOut(),
+      },
+    ];
+  }
 
   return (
     <>
