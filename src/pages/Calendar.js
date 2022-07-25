@@ -1,3 +1,4 @@
+import { TodayOutlined } from "@mui/icons-material";
 import { Grid, Box } from "@mui/material";
 import React, { useState } from "react";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
@@ -38,17 +39,22 @@ const Calendar = () => {
     // this.entries = await this.getEntries()
   };
 
+  const today = new Date();
+  const todayUTC = new Date(
+    Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
+  );
+
   const entries = [
     {
       id: 1,
       amount: -5,
-      date: new Date(Date.parse("2022-07-25T00:00:00Z")),
+      date: new Date(Date.UTC(2022, 6, 25)),
       category: "Food - Home",
     },
     {
       id: 2,
       amount: 100,
-      date: new Date(Date.parse("2022-07-27T00:00:00Z")),
+      date: new Date(Date.UTC(2022, 6, 27)),
       category: "Income - Work",
     },
   ];
@@ -56,7 +62,7 @@ const Calendar = () => {
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <ChangeWeek onPrevious={previousWeek} onNext={nextWeek} />
-      <Week day={new Date()} days={days} entries={entries} />
+      <Week today={todayUTC} days={days} entries={entries} />
     </Box>
   );
 };
