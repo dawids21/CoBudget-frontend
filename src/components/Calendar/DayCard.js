@@ -23,9 +23,9 @@ const DayCard = (props) => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ bgcolor: "primary.main" }}>{props.date.getDate()}</Avatar>
+        <Avatar sx={{ bgcolor: "primary.main" }}>{props.day.getDate()}</Avatar>
         <Typography color="primary.dark" sx={{ my: 1 }} variant="h5">
-          {dayNames[props.date.getDay()]}
+          {dayNames[props.day.getDay()]}
         </Typography>
         {props.entries.map((entry) => (
           <Entry

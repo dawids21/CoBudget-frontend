@@ -1,47 +1,44 @@
 import { Grid, Box } from "@mui/material";
 import React from "react";
 import DayCard from "../components/Calendar/DayCard";
+import Week from "../components/Calendar/Week";
 
 const Calendar = () => {
-  const days = [
+  const getStartDate = (day) => {
+    return new Date(
+      Date.UTC(
+        day.getFullYear(),
+        day.getMonth(),
+        day.getDate() - ((day.getDay() + 6) % 7)
+      )
+    );
+  };
+
+  const start = getStartDate(new Date());
+
+  const days = [0, 1, 2, 3, 4, 5, 6].map((n) => {
+    const clone = new Date(start.getTime());
+    clone.setDate(clone.getDate() + n);
+    return clone;
+  });
+
+  const entries = [
     {
-      date: new Date(2022, 6, 25),
-      entries: [{ id: 1, amount: -5, category: "Food - Home" }],
+      id: 1,
+      amount: -5,
+      date: new Date(Date.parse("2022-07-25T00:00:00Z")),
+      category: "Food - Home",
     },
     {
-      date: new Date(2022, 6, 26),
-      entries: [],
-    },
-    {
-      date: new Date(2022, 6, 27),
-      entries: [{ id: 2, amount: 100, category: "Income - Work" }],
-    },
-    {
-      date: new Date(2022, 6, 28),
-      entries: [],
-    },
-    {
-      date: new Date(2022, 6, 29),
-      entries: [],
-    },
-    {
-      date: new Date(2022, 6, 30),
-      entries: [],
-    },
-    {
-      date: new Date(2022, 6, 31),
-      entries: [],
+      id: 2,
+      amount: 100,
+      date: new Date(Date.parse("2022-07-27T00:00:00Z")),
+      category: "Income - Work",
     },
   ];
   return (
     <Box sx={{ mt: 2, mx: 4 }}>
-      <Grid container spacing={2}>
-        {days.map((day) => (
-          <Grid key={day.date} item xs={12}>
-            <DayCard date={day.date} entries={day.entries} />
-          </Grid>
-        ))}
-      </Grid>
+      <Week day={new Date()} days={days} entries={entries} />
     </Box>
   );
 };
