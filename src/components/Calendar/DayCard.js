@@ -14,7 +14,7 @@ const dayNames = [
 
 const DayCard = (props) => {
   return (
-    <Paper elevation={4} sx={{ py: 2 }}>
+    <Paper elevation={4} sx={{ padding: 2 }}>
       <Box
         sx={{
           display: "flex",
@@ -28,7 +28,11 @@ const DayCard = (props) => {
           {dayNames[props.date.getDay()]}
         </Typography>
         {props.entries.map((entry) => (
-          <Entry key={entry.id} data={entry} />
+          <Entry
+            key={entry.id}
+            amount={entry.amount}
+            category={entry.category}
+          />
         ))}
       </Box>
     </Paper>
