@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
 import Week from "../components/Calendar/Week";
+import ApiClient from "../util/api-client";
 
 const getStartDate = (day) => {
   return new Date(
@@ -49,34 +50,8 @@ const Calendar = () => {
   useEffect(() => {
     const end = new Date(start.getTime());
     end.setDate(start.getDate() + 6);
-    const sendRequest = async () => {
-      const response = await fetch(
-        "http://localhost:8080/api/entry?" +
-          new URLSearchParams({
-            from: start.toISOString().split("T")[0],
-            to: end.toISOString().split("T")[0],
-          }),
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const data = await response.json();
-
-      const entriesData = data.map((item) => ({
-        id: item.id,
-        amount: item.amount,
-        date: new Date(item.date),
-        category:
-          item.category !== null
-            ? `${item.category} - ${item.subcategory}`
-            : item.subcategory,
-      }));
-
-      setEntries(entriesData);
-    };
-    sendRequest();
+    const apiClient = new ApiClient(accessToken);
+    apiClient.getEntries(start, end, (entriesData) => setEntries(entriesData));
   }, [start, accessToken]);
 
   return (
