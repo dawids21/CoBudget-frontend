@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
@@ -18,6 +18,7 @@ const getStartDate = (day) => {
 
 const Calendar = () => {
   const [start, setStart] = useState(getStartDate(new Date()));
+  const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
@@ -48,17 +49,25 @@ const Calendar = () => {
   );
 
   useEffect(() => {
+    setIsLoading(true);
     const end = new Date(start.getTime());
     end.setDate(start.getDate() + 6);
     const apiClient = new ApiClient(accessToken);
-    apiClient.getEntries(start, end, (entriesData) => setEntries(entriesData));
+    apiClient.getEntries(start, end).then((fetchedEntries) => {
+      setEntries(fetchedEntries);
+      setIsLoading(false);
+    });
   }, [start, accessToken]);
 
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <ChangeWeek onPrevious={previousWeek} onNext={nextWeek} />
-      <Week today={todayUTC} days={days} entries={entries} />
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Week today={todayUTC} days={days} entries={entries} />
+      )}
     </Box>
   );
 };

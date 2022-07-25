@@ -3,7 +3,7 @@ class ApiClient {
     this.accessToken = accessToken;
   }
 
-  getEntries = async (start, end, consumer) => {
+  getEntries = async (start, end) => {
     const response = await fetch(
       "http://localhost:8080/api/entry?" +
         new URLSearchParams({
@@ -27,7 +27,7 @@ class ApiClient {
           ? `${item.category} - ${item.subcategory}`
           : item.subcategory,
     }));
-    consumer(entriesData);
+    return entriesData;
   };
 }
 
