@@ -39,10 +39,6 @@ const AppBar = () => {
   } else {
     buttons = [
       {
-        name: "Home",
-        action: () => navigate("/"),
-      },
-      {
         name: "Calendar",
         action: () => navigate("/calendar"),
       },
@@ -67,9 +63,21 @@ const AppBar = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h5" component="h1" sx={{ flexGrow: 1 }}>
-            CoBudget
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              alignSelf: "stretch",
+              userSelect: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/")}
+          >
+            <Typography variant="h5" component="h1">
+              CoBudget
+            </Typography>
+          </Box>
+          <Box sx={{ flexGrow: 1 }}></Box>
           {!isDrawerButtonVisible && (
             <Box>
               {buttons.map((button) => (
