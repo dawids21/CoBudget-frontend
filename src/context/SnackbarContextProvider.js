@@ -1,7 +1,6 @@
-import { Alert, Button, IconButton, Snackbar } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Alert, Snackbar } from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
 import SnackbarContext from "./snackbar-context";
-import CloseIcon from "@mui/icons-material/Close";
 
 const SnackbarContextProvider = (props) => {
   const [snackbars, setSnackbars] = useState([]);
@@ -18,9 +17,9 @@ const SnackbarContextProvider = (props) => {
     }
   }, [snackbars, messageInfo, open]);
 
-  const handleAlert = (alertMessage, severity) => {
+  const handleAlert = useCallback((alertMessage, severity) => {
     setSnackbars((prev) => [...prev, { message: alertMessage, severity }]);
-  };
+  }, []);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

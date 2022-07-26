@@ -16,7 +16,16 @@ class ApiClient {
         },
       }
     );
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
 
     const entriesData = data.map((item) => ({
       id: item.id,

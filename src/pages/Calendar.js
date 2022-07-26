@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
 import Week from "../components/Calendar/Week";
+import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
 
 const getStartDate = (day) => {
@@ -20,6 +21,7 @@ const Calendar = () => {
   const [start, setStart] = useState(getStartDate(new Date()));
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
+  const alert = useSnackbar();
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
 
@@ -33,14 +35,12 @@ const Calendar = () => {
     const result = new Date(start.getTime());
     result.setDate(result.getDate() - 7);
     setStart(getStartDate(result));
-    // this.entries = await this.getEntries()
   };
 
   const nextWeek = () => {
     const result = new Date(start.getTime());
     result.setDate(result.getDate() + 7);
     setStart(getStartDate(result));
-    // this.entries = await this.getEntries()
   };
 
   const today = new Date();
@@ -53,11 +53,14 @@ const Calendar = () => {
     const end = new Date(start.getTime());
     end.setDate(start.getDate() + 6);
     const apiClient = new ApiClient(accessToken);
-    apiClient.getEntries(start, end).then((fetchedEntries) => {
-      setEntries(fetchedEntries);
-      setIsLoading(false);
-    });
-  }, [start, accessToken]);
+    apiClient
+      .getEntries(start, end)
+      .then((fetchedEntries) => {
+        setEntries(fetchedEntries);
+        setIsLoading(false);
+      })
+      .catch((error) => alert(error.message, "error"));
+  }, [start, accessToken, alert]);
 
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
