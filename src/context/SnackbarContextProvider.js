@@ -1,33 +1,37 @@
 import { Alert, Button, IconButton, Snackbar } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SnackbarContext from "./snackbar-context";
 import CloseIcon from "@mui/icons-material/Close";
 
 const SnackbarContextProvider = (props) => {
+  const [snackbars, setSnackbars] = useState([]);
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState("success");
+  const [messageInfo, setMessageInfo] = useState(null);
+
+  useEffect(() => {
+    if (snackbars.length && !messageInfo) {
+      setMessageInfo({ ...snackbars[0] });
+      setSnackbars((prev) => prev.slice(1));
+      setOpen(true);
+    } else if (snackbars.length && messageInfo && open) {
+      setOpen(false);
+    }
+  }, [snackbars, messageInfo, open]);
 
   const handleAlert = (alertMessage, severity) => {
-    setMessage(alertMessage);
-    setSeverity(severity);
-    setOpen(true);
+    setSnackbars((prev) => [...prev, { message: alertMessage, severity }]);
   };
 
-  const handleClose = () => {
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
     setOpen(false);
   };
 
-  const action = (
-    <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
-      onClick={handleClose}
-    >
-      <CloseIcon fontSize="small" />
-    </IconButton>
-  );
+  const handleExited = () => {
+    setMessageInfo(null);
+  };
 
   return (
     <SnackbarContext.Provider
@@ -40,16 +44,15 @@ const SnackbarContextProvider = (props) => {
         open={open}
         autoHideDuration={3000}
         onClose={handleClose}
-        // message={message}
-        // action={action}
+        TransitionProps={{ onExited: handleExited }}
       >
         <Alert
-          severity={severity}
+          severity={messageInfo?.severity}
           onClose={handleClose}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {message}
+          {messageInfo?.message}
         </Alert>
       </Snackbar>
     </SnackbarContext.Provider>
