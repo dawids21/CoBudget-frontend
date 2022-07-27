@@ -21,16 +21,23 @@ import {
 import { useOktaAuth } from "@okta/okta-react";
 import useSnackbar from "../../hooks/use-snackbar";
 import ApiClient from "../../util/api-client";
+import useInput from "../../hooks/use-input";
 
 const AddEntryDialog = (props) => {
   const { authState } = useOktaAuth();
   const isFullscreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const { open, onClose } = props;
   const [categories, setCategories] = useState([]);
-  const [chosenCategoryName, setChosenCategoryName] = useState("");
-  const [chosenSubcategoryName, setChosenSubcategoryName] = useState("");
   const alert = useSnackbar();
+  const typeInput = useInput(
+    (value) => (value && value === "expense") || value === "income",
+    "expense"
+  );
+  const amountInput = useInput((value) => value && value >= 0);
+  const dateInput = useInput((value) => value);
+  const categoryInput = useInput((value) => value);
+  const subcategoryInput = useInput((value) => value);
 
+  const { open, onClose } = props;
   const { accessToken } = authState.accessToken;
 
   useEffect(() => {
@@ -45,22 +52,41 @@ const AddEntryDialog = (props) => {
   }, [accessToken]);
 
   const changeCategoryHandler = (event) => {
-    setChosenCategoryName(event.target.value);
-    setChosenSubcategoryName("");
-  };
-
-  const changeSubcategoryHandler = (event) => {
-    setChosenSubcategoryName(event.target.value);
+    categoryInput.valueChangeHandler(event);
+    subcategoryInput.reset();
   };
 
   const chosenCategory = categories.find(
-    (category) => category.name === chosenCategoryName
+    (category) => category.name === categoryInput.value
   );
 
   const subcategories = chosenCategory ? chosenCategory.subcategories : [];
 
+  const resetInputs = () => {
+    typeInput.reset();
+    amountInput.reset();
+    dateInput.reset();
+    categoryInput.reset();
+    subcategoryInput.reset();
+  };
+
+  const cancelHandler = () => {
+    resetInputs();
+    onClose();
+  };
+
+  const isInputValid =
+    typeInput.isValid &&
+    amountInput.isValid &&
+    dateInput.isValid &&
+    categoryInput.isValid &&
+    subcategoryInput.isValid;
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isInputValid) {
+      return;
+    }
+    resetInputs();
     console.log("Submitted");
   };
 
@@ -81,6 +107,9 @@ const AddEntryDialog = (props) => {
                 aria-labelledby="type"
                 defaultValue="expense"
                 name="type"
+                value={typeInput.value}
+                onChange={typeInput.valueChangeHandler}
+                onBlur={typeInput.inputBlurHandler}
               >
                 <FormControlLabel
                   value="expense"
@@ -96,12 +125,15 @@ const AddEntryDialog = (props) => {
             </FormControl>
             <TextField
               margin="normal"
-              autoFocus
               id="amount"
               label="Amount"
               type="number"
               fullWidth
               variant="standard"
+              value={amountInput.value}
+              onChange={amountInput.valueChangeHandler}
+              onBlur={amountInput.inputBlurHandler}
+              error={amountInput.hasError}
             />
             <TextField
               margin="normal"
@@ -109,7 +141,10 @@ const AddEntryDialog = (props) => {
               label="Date"
               type="date"
               fullWidth
-              value="2022-02-02"
+              value={dateInput.value}
+              onChange={dateInput.valueChangeHandler}
+              onBlur={dateInput.inputBlurHandler}
+              error={dateInput.hasError}
               InputLabelProps={{ shrink: true }}
               variant="standard"
             />
@@ -120,8 +155,10 @@ const AddEntryDialog = (props) => {
                 id="category"
                 label="Category"
                 variant="standard"
-                value={chosenCategoryName}
+                value={categoryInput.value}
                 onChange={changeCategoryHandler}
+                onBlur={categoryInput.inputBlurHandler}
+                error={categoryInput.hasError}
               >
                 {categories.map((category) => (
                   <MenuItem key={category.id} value={category.name}>
@@ -137,8 +174,10 @@ const AddEntryDialog = (props) => {
                 id="subcategory"
                 label="subcategory"
                 variant="standard"
-                value={chosenSubcategoryName}
-                onChange={changeSubcategoryHandler}
+                value={subcategoryInput.value}
+                onChange={subcategoryInput.valueChangeHandler}
+                onBlur={subcategoryInput.inputBlurHandler}
+                error={subcategoryInput.hasError}
               >
                 {subcategories.map((subcategory) => (
                   <MenuItem key={subcategory.id} value={subcategory.name}>
@@ -149,11 +188,20 @@ const AddEntryDialog = (props) => {
             </FormControl>
           </CardContent>
           <CardActions sx={{ display: "flex" }}>
-            <Button color="secondary" variant="outlined" onClick={onClose}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={cancelHandler}
+            >
               Cancel
             </Button>
             <Box sx={{ flexGrow: 1 }}></Box>
-            <Button variant="contained" type="submit" onClick={onClose}>
+            <Button
+              disabled={!isInputValid}
+              variant="contained"
+              type="submit"
+              onClick={onClose}
+            >
               Add
             </Button>
           </CardActions>
