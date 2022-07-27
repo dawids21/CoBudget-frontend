@@ -1,6 +1,7 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
+import AddEntryDialog from "../components/Calendar/AddEntryDialog";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
 import Week from "../components/Calendar/Week";
@@ -21,6 +22,7 @@ const Calendar = () => {
   const [start, setStart] = useState(getStartDate(new Date()));
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const alert = useSnackbar();
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
@@ -62,15 +64,21 @@ const Calendar = () => {
       .catch((error) => alert(error.message, "error"));
   }, [start, accessToken, alert]);
 
+  const closeDialog = () => {
+    setDialogOpen(false);
+  };
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
+      <Button onClick={() => setDialogOpen(true)}>Dialog</Button>
       <ChangeWeek onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
         <CircularProgress />
       ) : (
         <Week today={todayUTC} days={days} entries={entries} />
       )}
+      <AddEntryDialog open={dialogOpen} onClose={closeDialog} />
     </Box>
   );
 };
