@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -18,10 +18,46 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { useOktaAuth } from "@okta/okta-react";
+import useSnackbar from "../../hooks/use-snackbar";
+import ApiClient from "../../util/api-client";
 
 const AddEntryDialog = (props) => {
+  const { authState } = useOktaAuth();
   const isFullscreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const { open, onClose } = props;
+  const [categories, setCategories] = useState([]);
+  const [chosenCategoryName, setChosenCategoryName] = useState("");
+  const [chosenSubcategoryName, setChosenSubcategoryName] = useState("");
+  const alert = useSnackbar();
+
+  const { accessToken } = authState.accessToken;
+
+  useEffect(() => {
+    const apiClient = new ApiClient(accessToken);
+    apiClient
+      .getCategories()
+      .then((fetchedCategories) => {
+        console.log(fetchedCategories);
+        setCategories(fetchedCategories);
+      })
+      .catch((error) => alert(error.message, "error"));
+  }, [accessToken]);
+
+  const changeCategoryHandler = (event) => {
+    setChosenCategoryName(event.target.value);
+    setChosenSubcategoryName("");
+  };
+
+  const changeSubcategoryHandler = (event) => {
+    setChosenSubcategoryName(event.target.value);
+  };
+
+  const chosenCategory = categories.find(
+    (category) => category.name === chosenCategoryName
+  );
+
+  const subcategories = chosenCategory ? chosenCategory.subcategories : [];
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,16 +68,11 @@ const AddEntryDialog = (props) => {
     <Dialog open={open} onClose={onClose} fullScreen={isFullscreen}>
       <Card elevation={isFullscreen ? 0 : 2}>
         <form onSubmit={handleSubmit}>
-          <CardContent
-            sx={{
-              "& > *": { my: 1 },
-              "& > *:last-child": { mt: 1 },
-            }}
-          >
-            <Typography variant="h5" color="primary.dark" sx={{ mb: 1 }}>
+          <CardContent>
+            <Typography variant="h5" color="primary.dark">
               Add entry
             </Typography>
-            <FormControl>
+            <FormControl margin="normal" sx={{ mb: 0 }}>
               <FormLabel id="type" color="black">
                 Type
               </FormLabel>
@@ -64,6 +95,7 @@ const AddEntryDialog = (props) => {
               </RadioGroup>
             </FormControl>
             <TextField
+              margin="normal"
               autoFocus
               id="amount"
               label="Amount"
@@ -72,6 +104,7 @@ const AddEntryDialog = (props) => {
               variant="standard"
             />
             <TextField
+              margin="normal"
               id="date"
               label="Date"
               type="date"
@@ -80,28 +113,38 @@ const AddEntryDialog = (props) => {
               InputLabelProps={{ shrink: true }}
               variant="standard"
             />
-            <FormControl fullWidth>
+            <FormControl margin="normal" fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 labelId="category"
                 id="category"
                 label="Category"
                 variant="standard"
+                value={chosenCategoryName}
+                onChange={changeCategoryHandler}
               >
-                <MenuItem value="Food">Food</MenuItem>
-                <MenuItem value="Income">Income</MenuItem>
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.name}>
+                    {category.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl margin="normal" fullWidth>
               <InputLabel id="subcategory">Subcategory</InputLabel>
               <Select
                 labelId="subcategory"
                 id="subcategory"
-                label="Category"
+                label="subcategory"
                 variant="standard"
+                value={chosenSubcategoryName}
+                onChange={changeSubcategoryHandler}
               >
-                <MenuItem value="Home">Home</MenuItem>
-                <MenuItem value="Work">Work</MenuItem>
+                {subcategories.map((subcategory) => (
+                  <MenuItem key={subcategory.id} value={subcategory.name}>
+                    {subcategory.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </CardContent>

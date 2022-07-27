@@ -38,6 +38,26 @@ class ApiClient {
     }));
     return entriesData;
   };
+
+  getCategories = async () => {
+    const response = await fetch("http://localhost:8080/api/category/all", {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
+
+    return data;
+  };
 }
 
 export default ApiClient;
