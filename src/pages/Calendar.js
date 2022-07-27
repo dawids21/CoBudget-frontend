@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddEntryDialog from "../components/Calendar/AddEntryDialog";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
@@ -50,19 +50,22 @@ const Calendar = () => {
     Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())
   );
 
-  useEffect(() => {
-    setIsLoading(true);
+  const fetchEntries = useCallback(async () => {
     const end = new Date(start.getTime());
     end.setDate(start.getDate() + 6);
     const apiClient = new ApiClient(accessToken);
-    apiClient
-      .getEntries(start, end)
-      .then((fetchedEntries) => {
-        setEntries(fetchedEntries);
-        setIsLoading(false);
-      })
-      .catch((error) => alert(error.message, "error"));
+    try {
+      const fetchedEntries = await apiClient.getEntries(start, end);
+      setEntries(fetchedEntries);
+    } catch (e) {
+      alert(e.message, "error");
+    }
   }, [start, accessToken, alert]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchEntries().then(() => setIsLoading(false));
+  }, [fetchEntries]);
 
   const closeDialog = () => {
     setDialogOpen(false);
@@ -78,7 +81,11 @@ const Calendar = () => {
       ) : (
         <Week today={todayUTC} days={days} entries={entries} />
       )}
-      <AddEntryDialog open={dialogOpen} onClose={closeDialog} />
+      <AddEntryDialog
+        open={dialogOpen}
+        onClose={closeDialog}
+        onAdd={fetchEntries}
+      />
     </Box>
   );
 };

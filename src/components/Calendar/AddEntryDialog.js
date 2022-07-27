@@ -37,7 +37,7 @@ const AddEntryDialog = (props) => {
   const categoryInput = useInput((value) => value);
   const subcategoryInput = useInput((value) => value);
 
-  const { open, onClose } = props;
+  const { open, onClose, onAdd } = props;
   const { accessToken } = authState.accessToken;
 
   useEffect(() => {
@@ -81,13 +81,31 @@ const AddEntryDialog = (props) => {
     dateInput.isValid &&
     categoryInput.isValid &&
     subcategoryInput.isValid;
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isInputValid) {
       return;
     }
+    try {
+      const apiClient = new ApiClient(accessToken);
+      const subcategory = subcategories.find(
+        (subcategory) => subcategory.name === subcategoryInput.value
+      );
+      const entry = {
+        amount:
+          typeInput.value === "expense"
+            ? -Math.abs(amountInput.value)
+            : Math.abs(amountInput.value),
+        date: dateInput.value,
+        categoryId: subcategory.id,
+      };
+      await apiClient.addEntry(entry);
+      alert("Added entry", "success");
+    } catch (e) {
+      alert(e.message, "error");
+    }
     resetInputs();
-    console.log("Submitted");
+    onAdd();
   };
 
   return (
