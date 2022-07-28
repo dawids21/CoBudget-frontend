@@ -33,7 +33,10 @@ const AddEntryDialog = (props) => {
     "expense"
   );
   const amountInput = useInput((value) => value && value >= 0);
-  const dateInput = useInput((value) => value);
+  const dateInput = useInput(
+    (value) => value,
+    new Date().toISOString().split("T")[0]
+  );
   const categoryInput = useInput((value) => value);
   const subcategoryInput = useInput((value) => value);
 
