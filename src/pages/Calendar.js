@@ -26,6 +26,10 @@ const Calendar = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const alert = useSnackbar();
   const { authState } = useOktaAuth();
+  useEffect(() => {
+    document.title = "Calendar - CoBudget";
+  }, []);
+
   const { accessToken } = authState.accessToken;
 
   const days = [0, 1, 2, 3, 4, 5, 6].map((n) => {
