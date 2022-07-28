@@ -1,6 +1,7 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useCallback, useEffect, useState } from "react";
+import AddEntryButton from "../components/Calendar/AddEntryButton";
 import AddEntryDialog from "../components/Calendar/AddEntryDialog";
 import ChangeWeek from "../components/Calendar/ChangeWeek";
 import MonthAndYear from "../components/Calendar/MonthAndYear";
@@ -74,13 +75,13 @@ const Calendar = () => {
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
-      <Button onClick={() => setDialogOpen(true)}>Dialog</Button>
       <ChangeWeek onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
         <CircularProgress />
       ) : (
         <Week today={todayUTC} days={days} entries={entries} />
       )}
+      <AddEntryButton onClick={() => setDialogOpen(true)} />
       <AddEntryDialog
         open={dialogOpen}
         onClose={closeDialog}
