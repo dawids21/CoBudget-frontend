@@ -7,11 +7,27 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useOktaAuth } from "@okta/okta-react";
+import React, { useEffect, useState } from "react";
 import CollapseList from "../components/UI/CollapseList/CollapseList";
+import ApiClient from "../util/api-client";
 
 const Settings = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const { authState } = useOktaAuth();
+
+  const { accessToken } = authState.accessToken;
+
+  useEffect(() => {
+    const apiClient = new ApiClient(accessToken);
+    apiClient.getCategories().then((fetchedCategories) => {
+      fetchedCategories.forEach(
+        (category) => (category.sub = category.subcategories)
+      );
+      setCategories(fetchedCategories);
+    });
+  }, [accessToken]);
 
   const editHandler = () => {
     setIsEditing(true);
@@ -20,33 +36,6 @@ const Settings = () => {
   const finishHandler = () => {
     setIsEditing(false);
   };
-
-  const listData = [
-    {
-      id: 1,
-      name: "Food",
-      sub: [
-        {
-          id: 2,
-          name: "Home",
-        },
-        {
-          id: 3,
-          name: "Work",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Income",
-      sub: [
-        {
-          id: 5,
-          name: "Work",
-        },
-      ],
-    },
-  ];
 
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
@@ -57,7 +46,7 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <CollapseList data={listData} />
+              <CollapseList data={categories} />
             </CardContent>
 
             <CardActions sx={{ justifyContent: "flex-end" }}>
