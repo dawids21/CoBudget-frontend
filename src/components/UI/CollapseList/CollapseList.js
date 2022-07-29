@@ -12,7 +12,7 @@ import {
 
 const CollapseList = (props) => {
     const [isOpen, setIsOpen] = useState([]);
-    const { data } = props;
+    const { data, isInEditMode } = props;
 
     const clickHandler = (name) => {
       setIsOpen((prev) => {

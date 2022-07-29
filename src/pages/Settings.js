@@ -46,7 +46,7 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <CollapseList data={categories} />
+              <CollapseList data={categories} isInEditMode={isEditing} />
             </CardContent>
 
             <CardActions sx={{ justifyContent: "flex-end" }}>
