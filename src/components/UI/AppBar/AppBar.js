@@ -43,6 +43,10 @@ const AppBar = () => {
         action: () => navigate("/calendar"),
       },
       {
+        name: "Settings",
+        action: () => navigate("/settings"),
+      },
+      {
         name: "Logout",
         action: () => oktaAuth.signOut(),
       },

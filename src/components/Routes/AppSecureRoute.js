@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { toRelativeUrl } from "@okta/okta-auth-js";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect } from "react";
@@ -23,7 +23,18 @@ const AppSecureRoute = () => {
   }, [oktaAuth, authState, authState?.isAuthenticated]);
 
   if (!authState || !authState?.isAuthenticated) {
-    return <CircularProgress />;
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%,-50%)",
+        }}
+      >
+        <CircularProgress></CircularProgress>
+      </Box>
+    );
   }
 
   return <Outlet />;

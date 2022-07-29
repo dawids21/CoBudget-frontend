@@ -4,6 +4,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Calendar from "../../pages/Calendar";
 import Home from "../../pages/Home";
+import Settings from "../../pages/Settings";
 import AppSecureRoute from "./AppSecureRoute";
 const AppRoutes = () => {
   return (
@@ -15,6 +16,9 @@ const AppRoutes = () => {
       />
       <Route path="/calendar" element={<AppSecureRoute />}>
         <Route path="" element={<Calendar />} />
+      </Route>
+      <Route path="/settings" element={<AppSecureRoute />}>
+        <Route path="" element={<Settings />} />
       </Route>
     </Routes>
   );
