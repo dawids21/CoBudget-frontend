@@ -22,6 +22,7 @@ const CollapseList = (props) => {
     setIsOpen((prev) => {
       const newState = { ...prev };
       newState[name] = !newState[name];
+      console.log(newState);
       return newState;
     });
   };

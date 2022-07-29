@@ -17,11 +17,7 @@ const Settings = () => {
     setIsEditing(true);
   };
 
-  const cancelHandler = () => {
-    setIsEditing(false);
-  };
-
-  const confirmHandler = () => {
+  const finishHandler = () => {
     setIsEditing(false);
   };
 
@@ -63,26 +59,22 @@ const Settings = () => {
               </Typography>
               <CollapseList data={listData} />
             </CardContent>
-            {isEditing ? (
-              <CardActions sx={{ justifyContent: "space-between" }}>
+
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+              {isEditing ? (
                 <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={cancelHandler}
+                  disableRipple
+                  variant="contained"
+                  onClick={finishHandler}
                 >
-                  Cancel
+                  Finish
                 </Button>
-                <Button variant="contained" onClick={confirmHandler}>
-                  Confirm
-                </Button>
-              </CardActions>
-            ) : (
-              <CardActions sx={{ justifyContent: "flex-end" }}>
-                <Button variant="outlined" onClick={editHandler}>
+              ) : (
+                <Button disableRipple variant="outlined" onClick={editHandler}>
                   Edit
                 </Button>
-              </CardActions>
-            )}
+              )}
+            </CardActions>
           </Card>
         </Grid>
       </Grid>
