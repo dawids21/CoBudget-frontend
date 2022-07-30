@@ -1,63 +1,70 @@
-# CoBudget
+# Getting Started with Create React App
 
-Control your budget
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Available Scripts
 
-![Week view on desktop](https://user-images.githubusercontent.com/50179033/165453462-88aa6445-d024-404a-8481-55efcc85f7f2.png)
-<p align="center">
-  <img height="500" src="https://user-images.githubusercontent.com/50179033/165453889-b79564e4-4482-4689-a47a-74cde946272b.png">
-</p>
+In the project directory, you can run:
 
-## Introduction
+### `npm start`
 
-This app helps you take control over your budget. You can:
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-- record your every day expenses and incomes,
-- analyze your spending over months and years,
-- plan your money budget for the next month,
-- get notifications to remind you to save your daily costs
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## Technologies
+### `npm test`
 
-- JDK 17
-- Maven
-- Spring Boot 2.6.6
-- Spring Data JDBC
-- PostgreSQL
-- HTML
-- CSS
-- JavaScript
-- Vue
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Current features
+### `npm run build`
 
-- Login and sign-up
-- Adding expense
-- Week view on desktop and mobile
-- Add categories and subcategories
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Example of use
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Budget plannning
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-Every month you write all of your incomes and expense that you are expecting for the next month.
-It helps you control if you aren't spend too much money on some categories of products.
+### `npm run eject`
 
-### Expenses saving
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-Every day you quickly add all of your daily expenses. Doing this regularly will take you a few minutes but
-will help you a lot in finding the areas that take too much money from you.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Costs analyzing
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-After each month you can see a raport that will tell you how good you planned your month and how good you sticked to
-this plan.
-You can use it to make your month planning better. You can also spot the areas where you can save some money.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Inspiration
+## Learn More
 
-Inspired by budget planning techniques from [Jak oszczędzać pieniądze?](https://jakoszczedzacpieniadze.pl)
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## Licence
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-MIT
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
