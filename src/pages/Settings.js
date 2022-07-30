@@ -38,16 +38,13 @@ const Settings = () => {
           categoryOfDeletedSubcategory.subcategories.filter(
             (subcategory) => subcategory.id !== deleted.id
           );
-        console.log(newSubcategories);
         const newCategory = {
           ...categoryOfDeletedSubcategory,
           subcategories: newSubcategories,
           sub: newSubcategories,
         };
-        console.log(newCategory);
         newCategories = [...prevCategories];
         newCategories[categoryIndex] = newCategory;
-        console.log(newCategories);
       }
       return newCategories;
     });
