@@ -14,7 +14,6 @@ import useSnackbar from "../../hooks/use-snackbar";
 import ApiClient from "../../util/api-client";
 
 const EditCategories = (props) => {
-  const [isEditing, setIsEditing] = useState(false);
   const categoryInput = useInput((value) => value.length > 0);
   const categoryForSubcategoryInput = useInput((value) => value.length > 0);
   const subcategoryInput = useInput((value) => value.length > 0);
@@ -22,14 +21,21 @@ const EditCategories = (props) => {
   const alert = useSnackbar();
 
   const { accessToken } = authState.accessToken;
-  const { categories, onAddCategory, onAddSubcategory } = props;
+  const {
+    categories,
+    onAddCategory,
+    onAddSubcategory,
+    isEditing,
+    onStartEditing,
+    onStopEditing,
+  } = props;
 
   const editHandler = () => {
-    setIsEditing(true);
+    onStartEditing(true);
   };
 
   const finishHandler = () => {
-    setIsEditing(false);
+    onStopEditing(false);
     categoryInput.reset();
     categoryForSubcategoryInput.reset();
     subcategoryInput.reset();

@@ -7,6 +7,7 @@ import ApiClient from "../util/api-client";
 
 const Settings = () => {
   const [categories, setCategories] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
   const { authState } = useOktaAuth();
 
   const { accessToken } = authState.accessToken;
@@ -64,6 +65,9 @@ const Settings = () => {
                 categories={categories}
                 onAddCategory={onAddCategoryHandler}
                 onAddSubcategory={onAddSubategoryHandler}
+                isEditing={isEditing}
+                onStartEditing={() => setIsEditing(true)}
+                onStopEditing={() => setIsEditing(false)}
               />
             </CardContent>
           </Card>
