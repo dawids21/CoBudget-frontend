@@ -60,7 +60,7 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <CollapseList data={categories} />
+              <CollapseList data={categories} isEditing={isEditing} />
               <EditCategories
                 categories={categories}
                 onAddCategory={onAddCategoryHandler}
