@@ -62,6 +62,7 @@ const EditCategories = (props) => {
   const addCategoryForm = (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <TextField
+        autoComplete="off"
         margin="normal"
         id="category"
         label="Category"
@@ -145,6 +146,7 @@ const EditCategories = (props) => {
         </Select>
       </FormControl>
       <TextField
+        autoComplete="off"
         margin="normal"
         id="subcategory"
         label="Subcategory"
