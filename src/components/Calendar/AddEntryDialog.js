@@ -169,13 +169,12 @@ const AddEntryDialog = (props) => {
               InputLabelProps={{ shrink: true }}
               variant="standard"
             />
-            <FormControl margin="normal" fullWidth>
+            <FormControl variant="standard" margin="normal" fullWidth>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 labelId="category"
                 id="category"
                 label="Category"
-                variant="standard"
                 value={categoryInput.value}
                 onChange={changeCategoryHandler}
                 onBlur={categoryInput.inputBlurHandler}
@@ -188,13 +187,12 @@ const AddEntryDialog = (props) => {
                 ))}
               </Select>
             </FormControl>
-            <FormControl margin="normal" fullWidth>
+            <FormControl variant="standard" margin="normal" fullWidth>
               <InputLabel id="subcategory">Subcategory</InputLabel>
               <Select
                 labelId="subcategory"
                 id="subcategory"
                 label="subcategory"
-                variant="standard"
                 value={subcategoryInput.value}
                 onChange={subcategoryInput.valueChangeHandler}
                 onBlur={subcategoryInput.inputBlurHandler}
