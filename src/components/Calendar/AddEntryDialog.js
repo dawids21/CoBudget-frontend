@@ -51,7 +51,7 @@ const AddEntryDialog = (props) => {
         setCategories(fetchedCategories);
       })
       .catch((error) => alert(error.message, "error"));
-  }, [accessToken]);
+  }, [accessToken, alert]);
 
   const changeCategoryHandler = (event) => {
     categoryInput.valueChangeHandler(event);

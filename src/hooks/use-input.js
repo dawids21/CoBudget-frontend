@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 const inputStateReducer = (state, action) => {
-  if (action.type == "INPUT") {
+  if (action.type === "INPUT") {
     return { value: action.value, isTouched: state.isTouched };
   }
   if (action.type === "BLUR") {

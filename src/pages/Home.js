@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import Logo from "../components/UI/Logo";
 
