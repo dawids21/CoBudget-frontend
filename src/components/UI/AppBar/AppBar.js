@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import Drawer from "./Drawer";
 import { useOktaAuth } from "@okta/okta-react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
@@ -77,9 +78,7 @@ const AppBar = () => {
             }}
             onClick={() => navigate("/")}
           >
-            <Typography variant="h5" component="h1">
-              CoBudget
-            </Typography>
+            <Logo variant="h4" />
           </Box>
           <Box sx={{ flexGrow: 1 }}></Box>
           {!isDrawerButtonVisible && (

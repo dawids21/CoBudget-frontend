@@ -1,12 +1,13 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect } from "react";
+import Logo from "../components/UI/Logo";
 
 const Home = () => {
   useEffect(() => {
     document.title = "CoBudget";
   }, []);
   return (
-    <Typography
+    <Logo
       sx={{
         position: "absolute",
         left: "50%",
@@ -14,10 +15,7 @@ const Home = () => {
         transform: "translate(-50%,-50%)",
       }}
       variant="h2"
-      component="h1"
-    >
-      CoBudget
-    </Typography>
+    />
   );
 };
 
