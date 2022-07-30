@@ -1,5 +1,5 @@
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-const ISSUER = process.env.REACT_APP_ISSUER;
+const CLIENT_ID = process.env.REACT_APP_OKTA_CLIENT_ID;
+const ISSUER = process.env.REACT_APP_OKTA_ISSUER;
 const BASENAME = process.env.PUBLIC_URL || "";
 const REDIRECT_URI = `${window.location.origin}${BASENAME}/login/callback`;
 
