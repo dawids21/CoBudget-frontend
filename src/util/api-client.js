@@ -72,6 +72,22 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  addCategory = async (category) => {
+    const response = await fetch("http://localhost:8080/api/category", {
+      method: "POST",
+      body: JSON.stringify(category),
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+
+    return await response.json();
+  };
 }
 
 export default ApiClient;

@@ -48,7 +48,6 @@ const AddEntryDialog = (props) => {
     apiClient
       .getCategories()
       .then((fetchedCategories) => {
-        console.log(fetchedCategories);
         setCategories(fetchedCategories);
       })
       .catch((error) => alert(error.message, "error"));
