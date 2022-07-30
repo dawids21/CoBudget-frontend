@@ -8,7 +8,7 @@ class ApiClient {
 
   getEntries = async (start, end) => {
     const response = await fetch(
-      `${this.backendUrl}/api/entry?` +
+      `${this.backendUrl}api/entry?` +
         new URLSearchParams({
           from: start.toISOString().split("T")[0],
           to: end.toISOString().split("T")[0],
@@ -43,7 +43,7 @@ class ApiClient {
   };
 
   getCategories = async () => {
-    const response = await fetch(`${this.backendUrl}/api/category/all`, {
+    const response = await fetch(`${this.backendUrl}api/category/all`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
@@ -63,7 +63,7 @@ class ApiClient {
   };
 
   addEntry = async (entry) => {
-    const response = await fetch(`${this.backendUrl}/api/entry`, {
+    const response = await fetch(`${this.backendUrl}api/entry`, {
       method: "POST",
       body: JSON.stringify(entry),
       headers: {
@@ -77,7 +77,7 @@ class ApiClient {
   };
 
   addCategory = async (category) => {
-    const response = await fetch(`${this.backendUrl}/api/category`, {
+    const response = await fetch(`${this.backendUrl}api/category`, {
       method: "POST",
       body: JSON.stringify(category),
       headers: {
@@ -94,7 +94,7 @@ class ApiClient {
 
   deleteCategory = async (category) => {
     const response = await fetch(
-      `${this.backendUrl}/api/category/${category.id}`,
+      `${this.backendUrl}api/category/${category.id}`,
       {
         method: "DELETE",
         headers: {
