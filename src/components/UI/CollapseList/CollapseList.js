@@ -16,7 +16,7 @@ import {
 
 const CollapseList = (props) => {
   const [isOpen, setIsOpen] = useState([]);
-  const { data, isEditing } = props;
+  const { data, isEditing, onDelete } = props;
 
   const clickHandler = (name) => {
     setIsOpen((prev) => {
@@ -39,7 +39,7 @@ const CollapseList = (props) => {
             <IconButton
               edge="start"
               aria-label="delete"
-              onClick={() => console.log("Deleted " + subList.name)}
+              onClick={() => onDelete(subList)}
             >
               <DeleteIcon />
             </IconButton>
@@ -60,7 +60,7 @@ const CollapseList = (props) => {
               <IconButton
                 edge="start"
                 aria-label="delete"
-                onClick={() => console.log("Deleted " + list.name)}
+                onClick={() => onDelete(list)}
               >
                 <DeleteIcon />
               </IconButton>

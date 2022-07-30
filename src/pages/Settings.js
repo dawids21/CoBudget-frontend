@@ -22,6 +22,37 @@ const Settings = () => {
     });
   }, [accessToken]);
 
+  const onDeleteHandler = (deleted) => {
+    setCategories((prevCategories) => {
+      let newCategories;
+      if ("sub" in deleted) {
+        newCategories = prevCategories.filter(
+          (category) => category.id !== deleted.id
+        );
+      } else {
+        const categoryIndex = prevCategories.findIndex(
+          (category) => category.id === deleted.parentId
+        );
+        const categoryOfDeletedSubcategory = prevCategories[categoryIndex];
+        const newSubcategories =
+          categoryOfDeletedSubcategory.subcategories.filter(
+            (subcategory) => subcategory.id !== deleted.id
+          );
+        console.log(newSubcategories);
+        const newCategory = {
+          ...categoryOfDeletedSubcategory,
+          subcategories: newSubcategories,
+          sub: newSubcategories,
+        };
+        console.log(newCategory);
+        newCategories = [...prevCategories];
+        newCategories[categoryIndex] = newCategory;
+        console.log(newCategories);
+      }
+      return newCategories;
+    });
+  };
+
   const onAddCategoryHandler = (category) => {
     setCategories((prevCategories) => {
       return [
@@ -60,7 +91,11 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <CollapseList data={categories} isEditing={isEditing} />
+              <CollapseList
+                data={categories}
+                isEditing={isEditing}
+                onDelete={onDeleteHandler}
+              />
               <EditCategories
                 categories={categories}
                 onAddCategory={onAddCategoryHandler}
