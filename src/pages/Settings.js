@@ -3,12 +3,14 @@ import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
 import EditCategories from "../components/Settings/EditCategories";
 import CollapseList from "../components/UI/CollapseList/CollapseList";
+import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
 
 const Settings = () => {
   const [categories, setCategories] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const { authState } = useOktaAuth();
+  const alert = useSnackbar();
 
   const { accessToken } = authState.accessToken;
 
@@ -22,32 +24,38 @@ const Settings = () => {
     });
   }, [accessToken]);
 
-  const onDeleteHandler = (deleted) => {
-    setCategories((prevCategories) => {
-      let newCategories;
-      if ("sub" in deleted) {
-        newCategories = prevCategories.filter(
-          (category) => category.id !== deleted.id
-        );
-      } else {
-        const categoryIndex = prevCategories.findIndex(
-          (category) => category.id === deleted.parentId
-        );
-        const categoryOfDeletedSubcategory = prevCategories[categoryIndex];
-        const newSubcategories =
-          categoryOfDeletedSubcategory.subcategories.filter(
-            (subcategory) => subcategory.id !== deleted.id
+  const onDeleteHandler = async (deleted) => {
+    const apiClient = new ApiClient(accessToken);
+    try {
+      await apiClient.deleteCategory(deleted);
+      setCategories((prevCategories) => {
+        let newCategories;
+        if ("sub" in deleted) {
+          newCategories = prevCategories.filter(
+            (category) => category.id !== deleted.id
           );
-        const newCategory = {
-          ...categoryOfDeletedSubcategory,
-          subcategories: newSubcategories,
-          sub: newSubcategories,
-        };
-        newCategories = [...prevCategories];
-        newCategories[categoryIndex] = newCategory;
-      }
-      return newCategories;
-    });
+        } else {
+          const categoryIndex = prevCategories.findIndex(
+            (category) => category.id === deleted.parentId
+          );
+          const categoryOfDeletedSubcategory = prevCategories[categoryIndex];
+          const newSubcategories =
+            categoryOfDeletedSubcategory.subcategories.filter(
+              (subcategory) => subcategory.id !== deleted.id
+            );
+          const newCategory = {
+            ...categoryOfDeletedSubcategory,
+            subcategories: newSubcategories,
+            sub: newSubcategories,
+          };
+          newCategories = [...prevCategories];
+          newCategories[categoryIndex] = newCategory;
+        }
+        return newCategories;
+      });
+    } catch (e) {
+      alert(e, "error");
+    }
   };
 
   const onAddCategoryHandler = (category) => {

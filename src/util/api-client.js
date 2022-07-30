@@ -88,6 +88,21 @@ class ApiClient {
 
     return await response.json();
   };
+
+  deleteCategory = async (category) => {
+    const response = await fetch(
+      `http://localhost:8080/api/category/${category.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
 }
 
 export default ApiClient;
