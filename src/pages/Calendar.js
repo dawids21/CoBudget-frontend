@@ -3,8 +3,8 @@ import { useOktaAuth } from "@okta/okta-react";
 import React, { useCallback, useEffect, useState } from "react";
 import AddEntryButton from "../components/Calendar/AddEntryButton";
 import AddEntryDialog from "../components/Calendar/AddEntryDialog";
-import ChangeWeek from "../components/Calendar/ChangeWeek";
-import MonthAndYear from "../components/Calendar/MonthAndYear";
+import PreviousNextButtons from "../components/UI/PreviousNextButtons/PreviousNextButtons";
+import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import Week from "../components/Calendar/Week";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
@@ -79,7 +79,7 @@ const Calendar = () => {
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
-      <ChangeWeek onPrevious={previousWeek} onNext={nextWeek} />
+      <PreviousNextButtons onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
         <CircularProgress />
       ) : (
