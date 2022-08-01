@@ -2,18 +2,14 @@ import React, { useState } from "react";
 
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Collapse,
   List,
   ListItemButton,
   ListItemText,
   Box,
-  IconButton,
   ListItem,
-  ListItemIcon,
   Typography,
-  Card,
   Paper,
 } from "@mui/material";
 const PlanInfo = (props) => {
@@ -33,37 +29,44 @@ const PlanInfo = (props) => {
     });
   };
 
-  const getSubListComponent = (subList) => {
+  const getSubListComponent = (subcategory) => {
     return (
-      <ListItem key={subList.id} sx={{ pl: 4 }}>
-        <ListItemText primary={subList.name} />
+      <ListItem key={subcategory.id} sx={{ pl: 4 }}>
+        <ListItemText primary={subcategory.name} />
         <Typography variant="h6" sx={{ mr: 1 }}>
-          {subList.amount}$
+          {subcategory.amount}$
         </Typography>
       </ListItem>
     );
   };
 
-  const getListComponent = (list) => {
-    const subLists = list.sub;
+  const getListComponent = (category) => {
+    const subcategories = category.plannedSubcategories;
+    const categoryAmount = subcategories
+      .map((subcategory) => subcategory.amount)
+      .reduce((current, value) => current + value, 0);
     return (
-      <Box key={list.id}>
+      <Box key={category.id}>
         <ListItem disablePadding>
-          <ListItemButton onClick={clickHandler.bind(null, list.name)}>
-            <ListItemText primary={list.name} />
+          <ListItemButton onClick={clickHandler.bind(null, category.name)}>
+            <ListItemText primary={category.name} />
             <Typography variant="h6" sx={{ mr: 1 }}>
-              {list.amount}$
+              {categoryAmount}$
             </Typography>
-            {isOpen.includes(list.name) ? (
+            {isOpen.includes(category.name) ? (
               <ExpandLessIcon />
             ) : (
               <ExpandMoreIcon />
             )}
           </ListItemButton>
         </ListItem>
-        <Collapse in={isOpen.includes(list.name)} timeout="auto" unmountOnExit>
+        <Collapse
+          in={isOpen.includes(category.name)}
+          timeout="auto"
+          unmountOnExit
+        >
           <List component="div" disablePadding>
-            {subLists.map(getSubListComponent)}
+            {subcategories.map(getSubListComponent)}
           </List>
         </Collapse>
       </Box>

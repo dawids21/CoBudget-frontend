@@ -106,6 +106,34 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  getPlan = async (date) => {
+    const response = await fetch(
+      `${this.backendUrl}api/plan?` +
+        new URLSearchParams({
+          date: date.toISOString().split("T")[0],
+        }),
+      {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      if (response.status === 400) {
+        return null;
+      }
+      throw new Error("Something went wrong!");
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
+    return data;
+  };
 }
 
 export default ApiClient;

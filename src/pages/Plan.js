@@ -1,9 +1,12 @@
-import { Box } from "@mui/material";
-import React, { useState } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import PreviousNextButtons from "../components/UI/PreviousNextButtons/PreviousNextButtons";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import NotPlannedInfo from "../components/Plan/NotPlannedInfo";
 import PlanInfo from "../components/Plan/PlanInfo";
+import { useOktaAuth } from "@okta/okta-react";
+import ApiClient from "../util/api-client";
+import useSnackbar from "../hooks/use-snackbar";
 
 const getStartDate = (day) => {
   return new Date(
@@ -15,18 +18,30 @@ const getStartDate = (day) => {
   );
 };
 
-const DUMMY_DATA = {
-  id: 7,
-  date: "2022-08-03",
-  plannedCategories: [
-    { subcategoryName: "Home", amount: 10 },
-    { subcategoryName: "Work", amount: 20 },
-  ],
-};
-
 const Plan = () => {
   const [start, setStart] = useState(getStartDate(new Date()));
-  const [isPlanned, setIsPlanned] = useState(false);
+  const [plan, setPlan] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { authState } = useOktaAuth();
+  const alert = useSnackbar();
+
+  const { accessToken } = authState.accessToken;
+
+  useEffect(() => {
+    setIsLoading(true);
+    const date = new Date(start.getTime());
+    const apiClient = new ApiClient(accessToken);
+    apiClient
+      .getPlan(date)
+      .then((fetchedPlan) => {
+        setPlan(fetchedPlan);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        alert(e, "error");
+        setIsLoading(false);
+      });
+  }, [start, accessToken, alert]);
 
   const monthName = start.toLocaleDateString("default", { month: "long" });
 
@@ -34,47 +49,28 @@ const Plan = () => {
     const result = new Date(start.getTime());
     result.setMonth(result.getMonth() - 1);
     setStart(getStartDate(result));
-    setIsPlanned(false); //TODO check if planned
   };
 
   const nextMonth = () => {
     const result = new Date(start.getTime());
     result.setMonth(result.getMonth() + 1);
     setStart(getStartDate(result));
-    setIsPlanned(false); //TODO check if planned
   };
-
-  const planData = [
-    {
-      id: 1,
-      name: "Food",
-      amount: DUMMY_DATA.plannedCategories
-        .map((plannedCategory) => plannedCategory.amount)
-        .reduce((partial, current) => partial + current, 0),
-      sub: DUMMY_DATA.plannedCategories.map((plannedCategory) => ({
-        id: Math.random(),
-        name: plannedCategory.subcategoryName,
-        amount: plannedCategory.amount,
-      })),
-    },
-  ];
-
-  console.log(planData);
 
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousMonth} onNext={nextMonth} />
-      {!isPlanned ? (
+      {isLoading ? <CircularProgress /> : null}
+      {!isLoading && !plan ? (
         <NotPlannedInfo
           monthName={monthName}
-          onPlanClick={() => setIsPlanned(true) /* TODO Switch to plan mode*/}
+          onPlanClick={() => {}} /* TODO Switch to plan mode*/
         />
-      ) : (
-        <PlanInfo plan={planData} />
-      )}
+      ) : null}
+      {!isLoading && plan ? <PlanInfo plan={plan.plannedCategories} /> : null}
     </Box>
   );
-};;
+};
 
 export default Plan;
