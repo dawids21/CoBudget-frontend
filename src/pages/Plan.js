@@ -24,21 +24,28 @@ const Plan = () => {
     const result = new Date(start.getTime());
     result.setMonth(result.getMonth() - 1);
     setStart(getStartDate(result));
-  };
+    setIsPlanned(false); //TODO check if planned
+  };;
 
   const nextMonth = () => {
     const result = new Date(start.getTime());
     result.setMonth(result.getMonth() + 1);
     setStart(getStartDate(result));
-  };
+    setIsPlanned(false); //TODO check if planned
+  };;
 
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousMonth} onNext={nextMonth} />
-      {!isPlanned ? <NotPlannedInfo monthName={monthName} /> : null}
+      {!isPlanned ? (
+        <NotPlannedInfo
+          monthName={monthName}
+          onPlanClick={() => setIsPlanned(true) /* TODO Switch to plan mode*/}
+        />
+      ) : null}
     </Box>
   );
-};
+};;
 
 export default Plan;

@@ -17,7 +17,13 @@ const NotPlannedInfo = (props) => {
           yet
         </Typography>
       </Typography>
-      <Button sx={{ mt: 2 }} variant="contained" color="primary" size="large">
+      <Button
+        sx={{ mt: 2 }}
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={props.onPlanClick}
+      >
         Plan
       </Button>
     </Box>
