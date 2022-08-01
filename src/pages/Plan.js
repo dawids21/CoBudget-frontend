@@ -44,6 +44,23 @@ const Plan = () => {
     setIsPlanned(false); //TODO check if planned
   };
 
+  const planData = [
+    {
+      id: 1,
+      name: "Food",
+      amount: DUMMY_DATA.plannedCategories
+        .map((plannedCategory) => plannedCategory.amount)
+        .reduce((partial, current) => partial + current, 0),
+      sub: DUMMY_DATA.plannedCategories.map((plannedCategory) => ({
+        id: Math.random(),
+        name: plannedCategory.subcategoryName,
+        amount: plannedCategory.amount,
+      })),
+    },
+  ];
+
+  console.log(planData);
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
@@ -54,7 +71,7 @@ const Plan = () => {
           onPlanClick={() => setIsPlanned(true) /* TODO Switch to plan mode*/}
         />
       ) : (
-        <PlanInfo plan={DUMMY_DATA} />
+        <PlanInfo plan={planData} />
       )}
     </Box>
   );
