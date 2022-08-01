@@ -4,6 +4,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Calendar from "../../pages/Calendar";
 import Home from "../../pages/Home";
+import Plan from "../../pages/Plan";
 import Settings from "../../pages/Settings";
 import AppSecureRoute from "./AppSecureRoute";
 const AppRoutes = () => {
@@ -19,6 +20,9 @@ const AppRoutes = () => {
       </Route>
       <Route path="/settings" element={<AppSecureRoute />}>
         <Route path="" element={<Settings />} />
+      </Route>
+      <Route path="/plan" element={<AppSecureRoute />}>
+        <Route path="" element={<Plan />} />
       </Route>
     </Routes>
   );
