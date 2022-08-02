@@ -78,7 +78,7 @@ const PlanInfo = (props) => {
       {plan.length !== 0 ? (
         <List>{plan.map(getListComponent)}</List>
       ) : (
-        <Typography sx={{ py: 2 }} variant="h3" component="h3">
+        <Typography sx={{ py: 2 }} variant="h4" component="h3">
           Plan is empty
         </Typography>
       )}
