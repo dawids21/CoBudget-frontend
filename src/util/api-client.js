@@ -134,6 +134,20 @@ class ApiClient {
     }
     return data;
   };
+
+  createPlan = async (date) => {
+    const response = await fetch(`${this.backendUrl}api/plan?`, {
+      method: "POST",
+      body: JSON.stringify({ date: date.toISOString().split("T")[0] }),
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
 }
 
 export default ApiClient;

@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PreviousNextButtons from "../components/UI/PreviousNextButtons/PreviousNextButtons";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import NotPlannedInfo from "../components/Plan/NotPlannedInfo";
@@ -27,7 +27,7 @@ const Plan = () => {
 
   const { accessToken } = authState.accessToken;
 
-  useEffect(() => {
+  const fetchPlan = useCallback(() => {
     setIsLoading(true);
     const date = new Date(start.getTime());
     const apiClient = new ApiClient(accessToken);
@@ -38,10 +38,12 @@ const Plan = () => {
         setIsLoading(false);
       })
       .catch((e) => {
-        alert(e, "error");
+        alert(e.message, "error");
         setIsLoading(false);
       });
   }, [start, accessToken, alert]);
+
+  useEffect(() => fetchPlan(), [fetchPlan]);
 
   const monthName = start.toLocaleDateString("default", { month: "long" });
 
@@ -57,6 +59,14 @@ const Plan = () => {
     setStart(getStartDate(result));
   };
 
+  const createHandler = () => {
+    const apiClient = new ApiClient(accessToken);
+    apiClient
+      .createPlan(new Date(start.getTime()))
+      .then(() => fetchPlan())
+      .catch((e) => alert(e.message, "error"));
+  };
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
@@ -65,7 +75,7 @@ const Plan = () => {
       {!isLoading && !plan ? (
         <NotPlannedInfo
           monthName={monthName}
-          onPlanClick={() => {}} /* TODO Switch to plan mode*/
+          onCreateClick={createHandler} /* TODO Switch to plan mode*/
         />
       ) : null}
       {!isLoading && plan ? <PlanInfo plan={plan.plannedCategories} /> : null}

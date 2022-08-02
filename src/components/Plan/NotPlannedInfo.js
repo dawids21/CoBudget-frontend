@@ -22,9 +22,9 @@ const NotPlannedInfo = (props) => {
         variant="contained"
         color="primary"
         size="large"
-        onClick={props.onPlanClick}
+        onClick={props.onCreateClick}
       >
-        Plan
+        Create
       </Button>
     </Box>
   );
