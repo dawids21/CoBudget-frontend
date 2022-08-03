@@ -10,7 +10,6 @@ import {
   Box,
   ListItem,
   Typography,
-  Paper,
 } from "@mui/material";
 const PlanInfo = (props) => {
   const [isOpen, setIsOpen] = useState([]);
@@ -74,7 +73,7 @@ const PlanInfo = (props) => {
   };
 
   return (
-    <Paper elevation={3}>
+    <>
       {plan.length !== 0 ? (
         <List>{plan.map(getListComponent)}</List>
       ) : (
@@ -82,7 +81,7 @@ const PlanInfo = (props) => {
           Plan is empty
         </Typography>
       )}
-    </Paper>
+    </>
   );
 };
 

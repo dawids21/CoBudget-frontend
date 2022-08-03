@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, IconButton, Paper } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import PreviousNextButtons from "../components/UI/PreviousNextButtons/PreviousNextButtons";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
@@ -7,6 +7,9 @@ import PlanInfo from "../components/Plan/PlanInfo";
 import { useOktaAuth } from "@okta/okta-react";
 import ApiClient from "../util/api-client";
 import useSnackbar from "../hooks/use-snackbar";
+import { Edit } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { getMonth } from "../util/date-util";
 
 const getStartDate = (day) => {
   return new Date(
@@ -24,6 +27,7 @@ const Plan = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
+  const navigate = useNavigate();
 
   const { accessToken } = authState.accessToken;
 
@@ -45,7 +49,7 @@ const Plan = () => {
 
   useEffect(() => fetchPlan(), [fetchPlan]);
 
-  const monthName = start.toLocaleDateString("default", { month: "long" });
+  const monthName = getMonth(start);
 
   const previousMonth = () => {
     const result = new Date(start.getTime());
@@ -78,7 +82,23 @@ const Plan = () => {
           onCreateClick={createHandler} /* TODO Switch to plan mode*/
         />
       ) : null}
-      {!isLoading && plan ? <PlanInfo plan={plan.plannedCategories} /> : null}
+      {!isLoading && plan ? (
+        <Paper sx={{ display: "flex", flexDirection: "column" }} elevation={3}>
+          <IconButton
+            sx={{ alignSelf: "flex-end" }}
+            onClick={() =>
+              navigate(
+                `/plan/new?date=${
+                  new Date(start.getTime()).toISOString().split("T")[0]
+                }`
+              )
+            }
+          >
+            <Edit />
+          </IconButton>
+          <PlanInfo plan={plan.plannedCategories} />
+        </Paper>
+      ) : null}
     </Box>
   );
 };
