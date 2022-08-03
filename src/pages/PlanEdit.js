@@ -16,6 +16,9 @@ const PlanEdit = () => {
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
   const dateParam = searchParams.get("date");
+  if (!dateParam) {
+    navigate("/plan", { replace: true });
+  }
   const date = useMemo(() => new Date(Date.parse(dateParam)), [dateParam]);
 
   const { accessToken } = authState.accessToken;
@@ -53,9 +56,9 @@ const PlanEdit = () => {
         <Button
           sx={{ alignSelf: "flex-end", mb: 1, mr: 1 }}
           variant="outlined"
-          onClick={() => navigate("/plan")}
+          onClick={() => navigate(`/plan?date=${dateParam}`)}
         >
-          Go back
+          Finish
         </Button>
       </Paper>
     </Box>

@@ -8,7 +8,7 @@ import { useOktaAuth } from "@okta/okta-react";
 import ApiClient from "../util/api-client";
 import useSnackbar from "../hooks/use-snackbar";
 import { Edit } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getMonth } from "../util/date-util";
 
 const getStartDate = (day) => {
@@ -22,12 +22,20 @@ const getStartDate = (day) => {
 };
 
 const Plan = () => {
-  const [start, setStart] = useState(getStartDate(new Date()));
   const [plan, setPlan] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const dateParam = searchParams.get("date");
+  let startDate;
+  if (dateParam) {
+    startDate = getStartDate(new Date(Date.parse(dateParam)));
+  } else {
+    startDate = getStartDate(new Date());
+  }
+  const [start, setStart] = useState(startDate);
 
   const { accessToken } = authState.accessToken;
 
