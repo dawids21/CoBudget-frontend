@@ -13,6 +13,8 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
+import ApiClient from "../../util/api-client";
+import { useOktaAuth } from "@okta/okta-react";
 
 const planReducer = (state, action) => {
   if (action.type === "CHANGE_VALUE") {
@@ -37,6 +39,8 @@ const planReducer = (state, action) => {
 };
 
 const PlanEditList = (props) => {
+  const { authState } = useOktaAuth();
+  const { accessToken } = authState.accessToken;
   const [isOpen, setIsOpen] = useState([]);
   const { categories, plan } = props;
   const { plannedCategories } = plan;
@@ -93,6 +97,20 @@ const PlanEditList = (props) => {
     });
   };
 
+  const blurSubcategoryHandler = async (categoryId, subcategoryId) => {
+    const category = planState.find((category) => category.id === categoryId);
+    const subcategory = category.subcategories.find(
+      (subcategory) => subcategory.id === subcategoryId
+    );
+    const { amount } = subcategory;
+    const apiClient = new ApiClient(accessToken);
+    await apiClient.planCategory(
+      subcategory.id,
+      plan.id,
+      amount ? parseInt(amount) : 0
+    );
+  };
+
   const getListComponent = (category) => {
     const categoryAmount = category.subcategories
       .map((subcategory) => subcategory.amount)
@@ -139,6 +157,7 @@ const PlanEditList = (props) => {
             categoryId,
             subcategory.id
           )}
+          onBlur={blurSubcategoryHandler.bind(null, categoryId, subcategory.id)}
           sx={{ mr: 1, width: "10ch" }}
           InputProps={{
             endAdornment: <InputAdornment position="end">$</InputAdornment>,
