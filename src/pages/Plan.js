@@ -77,10 +77,7 @@ const Plan = () => {
       <PreviousNextButtons onPrevious={previousMonth} onNext={nextMonth} />
       {isLoading ? <CircularProgress /> : null}
       {!isLoading && !plan ? (
-        <NotPlannedInfo
-          monthName={monthName}
-          onCreateClick={createHandler} /* TODO Switch to plan mode*/
-        />
+        <NotPlannedInfo monthName={monthName} onCreateClick={createHandler} />
       ) : null}
       {!isLoading && plan ? (
         <Paper sx={{ display: "flex", flexDirection: "column" }} elevation={3}>
@@ -88,7 +85,7 @@ const Plan = () => {
             sx={{ alignSelf: "flex-end" }}
             onClick={() =>
               navigate(
-                `/plan/new?date=${
+                `/plan/edit?date=${
                   new Date(start.getTime()).toISOString().split("T")[0]
                 }`
               )

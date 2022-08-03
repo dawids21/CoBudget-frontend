@@ -24,7 +24,9 @@ const AppRoutes = () => {
       </Route>
       <Route path="/plan" element={<AppSecureRoute />}>
         <Route path="" element={<Plan />} />
-        <Route path="/plan/new" element={<PlanEdit />} />
+      </Route>
+      <Route path="/plan/edit" element={<AppSecureRoute />}>
+        <Route path="" element={<PlanEdit />} />
       </Route>
     </Routes>
   );
