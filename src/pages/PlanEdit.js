@@ -1,13 +1,14 @@
-import { Box, CircularProgress, Paper } from "@mui/material";
+import { Box, Button, CircularProgress, Paper } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PlanEditList from "../components/PlanEdit/PlanEditList";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
 
 const PlanEdit = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [categories, setCategories] = useState([]);
   const [plan, setPlan] = useState({});
@@ -43,12 +44,19 @@ const PlanEdit = () => {
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={date} />
-      <Paper elevation={3}>
+      <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
         {!isLoading ? (
           <PlanEditList categories={categories} plan={plan} />
         ) : (
           <CircularProgress />
         )}
+        <Button
+          sx={{ alignSelf: "flex-end", mb: 1, mr: 1 }}
+          variant="outlined"
+          onClick={() => navigate("/plan")}
+        >
+          Go back
+        </Button>
       </Paper>
     </Box>
   );
