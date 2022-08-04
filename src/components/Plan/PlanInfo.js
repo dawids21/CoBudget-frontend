@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { ListItem, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import PlanInfoCategoryContent from "./PlanInfoCategoryContent";
 import PlanInfoSubcategoryContent from "./PlanInfoSubcategoryContent";
 import NestedList from "../UI/NestedList/NestedList";

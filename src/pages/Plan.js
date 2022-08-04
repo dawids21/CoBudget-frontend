@@ -4,8 +4,6 @@ import {
   CircularProgress,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   Paper,
