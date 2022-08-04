@@ -1,8 +1,10 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
+import CategoryContent from "../components/Settings/CategoryContent";
 import EditCategories from "../components/Settings/EditCategories";
-import CollapseList from "../components/UI/CollapseList/CollapseList";
+import SubcategoryContent from "../components/Settings/SubcategoryContent";
+import NestedList from "../components/UI/NestedList/NestedList";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
 
@@ -80,6 +82,28 @@ const Settings = () => {
     });
   };
 
+  const getCategoryComponent = (category, clickHandler, isOpen) => {
+    return (
+      <CategoryContent
+        isEditing={isEditing}
+        onDelete={onDeleteHandler}
+        category={category}
+        onClick={clickHandler}
+        isOpen={isOpen}
+      />
+    );
+  };
+
+  const getSubcategoryComponent = (subcategory) => {
+    return (
+      <SubcategoryContent
+        isEditing={isEditing}
+        onDelete={onDeleteHandler}
+        subcategory={subcategory}
+      />
+    );
+  };
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <Grid container>
@@ -96,10 +120,10 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <CollapseList
+              <NestedList
                 data={categories}
-                isEditing={isEditing}
-                onDelete={onDeleteHandler}
+                listComponent={getCategoryComponent}
+                subListComponent={getSubcategoryComponent}
               />
               <EditCategories
                 categories={categories}

@@ -43,6 +43,10 @@ const AppBar = () => {
         action: () => navigate("/calendar"),
       },
       {
+        name: "Plan",
+        action: () => navigate("/plan"),
+      },
+      {
         name: "Settings",
         action: () => navigate("/settings"),
       },

@@ -106,6 +106,77 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  getPlan = async (date) => {
+    const response = await fetch(
+      `${this.backendUrl}api/plan?` +
+        new URLSearchParams({
+          date: date.toISOString().split("T")[0],
+        }),
+      {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      if (response.status === 400) {
+        return null;
+      }
+      throw new Error("Something went wrong!");
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      throw new Error(e.message);
+    }
+    return data;
+  };
+
+  createPlan = async (date) => {
+    const response = await fetch(`${this.backendUrl}api/plan`, {
+      method: "POST",
+      body: JSON.stringify({ date: date.toISOString().split("T")[0] }),
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
+
+  planCategory = async (categoryId, planId, amount) => {
+    const response = await fetch(
+      `${this.backendUrl}api/plan/${planId}/category/${categoryId}?` +
+        new URLSearchParams({ amount }),
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
+
+  deletePlan = async (id) => {
+    const response = await fetch(`${this.backendUrl}api/plan/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
 }
 
 export default ApiClient;
