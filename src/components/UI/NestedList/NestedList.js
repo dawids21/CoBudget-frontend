@@ -32,17 +32,17 @@ const CollapseList = (props) => {
         </ListItem>
         <Collapse in={isOpen.includes(list.name)} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {subLists.map(getSubListComponent)}
+            {subLists.map((subList) => getSubListComponent(subList, list))}
           </List>
         </Collapse>
       </Box>
     );
   };
 
-  const getSubListComponent = (subList) => {
+  const getSubListComponent = (subList, list) => {
     return (
       <ListItem key={subList.id} sx={{ pl: 4 }}>
-        {subListComponent(subList)}
+        {subListComponent(subList, list)}
       </ListItem>
     );
   };

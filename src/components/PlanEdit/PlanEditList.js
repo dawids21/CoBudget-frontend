@@ -1,35 +1,25 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer } from "react";
 
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemText,
-  Box,
-  ListItem,
-  Typography,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
 import ApiClient from "../../util/api-client";
 import { useOktaAuth } from "@okta/okta-react";
+import PlanEditListCategoryContent from "./PlanEditListCategoryContent";
+import PlanEditListSubcategoryContent from "./PlanEditListSubcategoryContent";
+import NestedList from "../UI/NestedList/NestedList";
 
 const planReducer = (state, action) => {
   if (action.type === "CHANGE_VALUE") {
     const copyOfState = [...state].map((category) => ({
       ...category,
-      subcategories: [...category.subcategories],
+      sub: [...category.sub],
     }));
     const category = copyOfState.find(
       (category) => category.id === action.categoryId
     );
-    const subcategoryIndex = category.subcategories.findIndex(
+    const subcategoryIndex = category.sub.findIndex(
       (subcategory) => subcategory.id === action.subcategoryId
     );
-    const subcategory = category.subcategories[subcategoryIndex];
-    category.subcategories[subcategoryIndex] = {
+    const subcategory = category.sub[subcategoryIndex];
+    category.sub[subcategoryIndex] = {
       ...subcategory,
       amount: action.value,
     };
@@ -41,7 +31,6 @@ const planReducer = (state, action) => {
 const PlanEditList = (props) => {
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
-  const [isOpen, setIsOpen] = useState([]);
   const { categories, plan } = props;
   const { plannedCategories } = plan;
   const [planState, dispatchPlan] = useReducer(
@@ -56,7 +45,7 @@ const PlanEditList = (props) => {
           ...subcategory,
           amount: "",
         }));
-        return { ...category, subcategories };
+        return { ...category, sub: subcategories };
       }
 
       const subcategories = category.subcategories.map((subcategory) => {
@@ -71,22 +60,9 @@ const PlanEditList = (props) => {
         return { ...subcategory, amount: `${plannedSubcategory.amount}` };
       });
 
-      return { ...category, subcategories };
+      return { ...category, sub: subcategories };
     })
   );
-
-  const clickHandler = (name) => {
-    setIsOpen((prev) => {
-      let newIsOpen;
-      if (prev.includes(name)) {
-        newIsOpen = prev.filter((item) => item !== name);
-      } else {
-        newIsOpen = [...prev];
-        newIsOpen.push(name);
-      }
-      return newIsOpen;
-    });
-  };
 
   const changeSubcategoryHandler = (categoryId, subcategoryId, event) => {
     dispatchPlan({
@@ -99,7 +75,7 @@ const PlanEditList = (props) => {
 
   const blurSubcategoryHandler = async (categoryId, subcategoryId) => {
     const category = planState.find((category) => category.id === categoryId);
-    const subcategory = category.subcategories.find(
+    const subcategory = category.sub.find(
       (subcategory) => subcategory.id === subcategoryId
     );
     const { amount } = subcategory;
@@ -111,63 +87,37 @@ const PlanEditList = (props) => {
     );
   };
 
-  const getListComponent = (category) => {
-    const categoryAmount = category.subcategories
-      .map((subcategory) => subcategory.amount)
-      .reduce((current, value) => current + (value ? parseInt(value) : 0), 0);
+  const getCategoryComponent = (category, clickHandler, isOpen) => {
     return (
-      <Box key={category.id}>
-        <ListItem disablePadding>
-          <ListItemButton onClick={clickHandler.bind(null, category.name)}>
-            <ListItemText primary={category.name} />
-            <Typography variant="h6" sx={{ mr: 1 }}>
-              {categoryAmount}$
-            </Typography>
-            {isOpen.includes(category.name) ? (
-              <ExpandLessIcon />
-            ) : (
-              <ExpandMoreIcon />
-            )}
-          </ListItemButton>
-        </ListItem>
-        <Collapse
-          in={isOpen.includes(category.name)}
-          timeout="auto"
-          unmountOnExit
-        >
-          <List component="div" disablePadding>
-            {category.subcategories.map(
-              getSubListComponent.bind(null, category.id)
-            )}
-          </List>
-        </Collapse>
-      </Box>
+      <PlanEditListCategoryContent
+        category={category}
+        onClick={clickHandler}
+        isOpen={isOpen}
+      />
     );
   };
 
-  const getSubListComponent = (categoryId, subcategory) => {
+  const getSubcategoryComponent = (subcategory, category) => {
     return (
-      <ListItem key={subcategory.id} sx={{ pl: 4 }}>
-        <ListItemText primary={subcategory.name} />
-        <TextField
-          type="number"
-          value={subcategory.amount}
-          onChange={changeSubcategoryHandler.bind(
-            null,
-            categoryId,
-            subcategory.id
-          )}
-          onBlur={blurSubcategoryHandler.bind(null, categoryId, subcategory.id)}
-          sx={{ mr: 1, width: "10ch" }}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">$</InputAdornment>,
-          }}
-        />
-      </ListItem>
+      <PlanEditListSubcategoryContent
+        subcategory={subcategory}
+        onChange={changeSubcategoryHandler.bind(
+          null,
+          category.id,
+          subcategory.id
+        )}
+        onBlur={blurSubcategoryHandler.bind(null, category.id, subcategory.id)}
+      />
     );
   };
 
-  return <List>{planState.map(getListComponent)}</List>;
+  return (
+    <NestedList
+      data={planState}
+      listComponent={getCategoryComponent}
+      subListComponent={getSubcategoryComponent}
+    />
+  );
 };
 
 export default PlanEditList;
