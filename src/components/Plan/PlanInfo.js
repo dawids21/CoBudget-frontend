@@ -1,81 +1,36 @@
 import React, { useState } from "react";
 
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Collapse,
-  List,
-  ListItemButton,
-  ListItemText,
-  Box,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { ListItem, Typography } from "@mui/material";
+import PlanInfoCategoryContent from "./PlanInfoCategoryContent";
+import PlanInfoSubcategoryContent from "./PlanInfoSubcategoryContent";
+import NestedList from "../UI/NestedList/NestedList";
 const PlanInfo = (props) => {
-  const [isOpen, setIsOpen] = useState([]);
   const { plan } = props;
 
-  const clickHandler = (name) => {
-    setIsOpen((prev) => {
-      let newIsOpen;
-      if (prev.includes(name)) {
-        newIsOpen = prev.filter((item) => item !== name);
-      } else {
-        newIsOpen = [...prev];
-        newIsOpen.push(name);
-      }
-      return newIsOpen;
-    });
-  };
+  plan.forEach((category) => (category.sub = category.plannedSubcategories));
 
-  const getSubListComponent = (subcategory) => {
+  const getCategoryComponent = (category, clickHandler, isOpen) => {
     return (
-      <ListItem key={subcategory.id} sx={{ pl: 4 }}>
-        <ListItemText primary={subcategory.name} />
-        <Typography variant="h6" sx={{ mr: 1 }}>
-          {subcategory.amount}$
-        </Typography>
-      </ListItem>
+      <PlanInfoCategoryContent
+        category={category}
+        onClick={clickHandler}
+        isOpen={isOpen}
+      />
     );
   };
 
-  const getListComponent = (category) => {
-    const subcategories = category.plannedSubcategories;
-    const categoryAmount = subcategories
-      .map((subcategory) => subcategory.amount)
-      .reduce((current, value) => current + value, 0);
-    return (
-      <Box key={category.id}>
-        <ListItem disablePadding>
-          <ListItemButton onClick={clickHandler.bind(null, category.name)}>
-            <ListItemText primary={category.name} />
-            <Typography variant="h6" sx={{ mr: 1 }}>
-              {categoryAmount}$
-            </Typography>
-            {isOpen.includes(category.name) ? (
-              <ExpandLessIcon />
-            ) : (
-              <ExpandMoreIcon />
-            )}
-          </ListItemButton>
-        </ListItem>
-        <Collapse
-          in={isOpen.includes(category.name)}
-          timeout="auto"
-          unmountOnExit
-        >
-          <List component="div" disablePadding>
-            {subcategories.map(getSubListComponent)}
-          </List>
-        </Collapse>
-      </Box>
-    );
+  const getSubcategoryComponent = (subcategory) => {
+    return <PlanInfoSubcategoryContent subcategory={subcategory} />;
   };
 
   return (
     <>
       {plan.length !== 0 ? (
-        <List>{plan.map(getListComponent)}</List>
+        <NestedList
+          data={plan}
+          listComponent={getCategoryComponent}
+          subListComponent={getSubcategoryComponent}
+        />
       ) : (
         <Typography sx={{ py: 2 }} variant="h4" component="h3">
           Plan is empty
