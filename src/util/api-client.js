@@ -165,6 +165,18 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  deletePlan = async (id) => {
+    const response = await fetch(`${this.backendUrl}api/plan/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    }
+  };
 }
 
 export default ApiClient;

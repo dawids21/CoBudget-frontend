@@ -1,4 +1,15 @@
-import { Box, CircularProgress, IconButton, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Paper,
+} from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import PreviousNextButtons from "../components/UI/PreviousNextButtons/PreviousNextButtons";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
@@ -7,7 +18,8 @@ import PlanInfo from "../components/Plan/PlanInfo";
 import { useOktaAuth } from "@okta/okta-react";
 import ApiClient from "../util/api-client";
 import useSnackbar from "../hooks/use-snackbar";
-import { Edit } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getMonth } from "../util/date-util";
 
@@ -24,6 +36,7 @@ const getStartDate = (day) => {
 const Plan = () => {
   const [plan, setPlan] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
   const navigate = useNavigate();
@@ -79,6 +92,20 @@ const Plan = () => {
       .catch((e) => alert(e.message, "error"));
   };
 
+  const closeDeleteDialogHandler = async (response) => {
+    setIsDeleteDialogOpen(false);
+    if (!response) {
+      return;
+    }
+    const apiClient = new ApiClient(accessToken);
+    try {
+      await apiClient.deletePlan(plan.id);
+      setPlan(null);
+    } catch (e) {
+      alert(e.message, "error");
+    }
+  };
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
@@ -89,21 +116,45 @@ const Plan = () => {
       ) : null}
       {!isLoading && plan ? (
         <Paper sx={{ display: "flex", flexDirection: "column" }} elevation={3}>
-          <IconButton
-            sx={{ alignSelf: "flex-end" }}
-            onClick={() =>
-              navigate(
-                `/plan/edit?date=${
-                  new Date(start.getTime()).toISOString().split("T")[0]
-                }`
-              )
-            }
+          <Box
+            sx={{
+              display: "flex",
+              alignSelf: "flex-end",
+            }}
           >
-            <Edit />
-          </IconButton>
+            <IconButton onClick={() => setIsDeleteDialogOpen(true)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton
+              onClick={() =>
+                navigate(
+                  `/plan/edit?date=${
+                    new Date(start.getTime()).toISOString().split("T")[0]
+                  }`
+                )
+              }
+            >
+              <EditIcon />
+            </IconButton>
+          </Box>
           <PlanInfo plan={plan.plannedCategories} />
         </Paper>
       ) : null}
+
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={closeDeleteDialogHandler.bind(null, false)}
+      >
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogActions>
+          <Button onClick={closeDeleteDialogHandler.bind(null, false)}>
+            No
+          </Button>
+          <Button onClick={closeDeleteDialogHandler.bind(null, true)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
