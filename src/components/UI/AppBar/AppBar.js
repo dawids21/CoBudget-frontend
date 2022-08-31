@@ -33,7 +33,7 @@ const AppBar = () => {
     buttons = [
       {
         name: "Login",
-        action: () => oktaAuth.signInWithRedirect(),
+        action: () => navigate("/login"),
       },
     ];
   } else {
