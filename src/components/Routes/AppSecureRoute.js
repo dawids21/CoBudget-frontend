@@ -2,10 +2,11 @@ import { Box, CircularProgress } from "@mui/material";
 import { toRelativeUrl } from "@okta/okta-auth-js";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const AppSecureRoute = () => {
   const { oktaAuth, authState } = useOktaAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!authState) {
@@ -18,9 +19,9 @@ const AppSecureRoute = () => {
         window.location.origin
       );
       oktaAuth.setOriginalUri(originalUri);
-      oktaAuth.signInWithRedirect();
+      navigate("/login");
     }
-  }, [oktaAuth, authState, authState?.isAuthenticated]);
+  }, [oktaAuth, authState, authState?.isAuthenticated, navigate]);
 
   if (!authState || !authState?.isAuthenticated) {
     return (
