@@ -27,6 +27,9 @@ const Login = () => {
       issuer,
       clientId,
       redirectUri,
+      features: {
+        registration: true,
+      },
     });
 
     signInWidget.renderEl(
