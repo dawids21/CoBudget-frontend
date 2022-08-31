@@ -3,10 +3,18 @@ import "@okta/okta-signin-widget/dist/css/okta-sign-in.min.css";
 import OktaSignIn from "@okta/okta-signin-widget";
 import auth from "../config/auth";
 import { useOktaAuth } from "@okta/okta-react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { oktaAuth } = useOktaAuth();
+  const { oktaAuth, authState } = useOktaAuth();
   const widgetRef = useRef();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authState && authState?.isAuthenticated) {
+      navigate("/");
+    }
+  }, [navigate, authState]);
 
   const { issuer, clientId, redirectUri } = auth;
 
