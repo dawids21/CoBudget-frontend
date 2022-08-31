@@ -8,10 +8,13 @@ import Plan from "../../pages/Plan";
 import PlanEdit from "../../pages/PlanEdit";
 import Settings from "../../pages/Settings";
 import AppSecureRoute from "./AppSecureRoute";
+import Login from "../../pages/Login";
+
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
       <Route
         path="/login/callback"
         element={<LoginCallback loadingElement={<CircularProgress />} />}
