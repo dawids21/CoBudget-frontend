@@ -13,6 +13,8 @@ const PlanEdit = () => {
   const [categories, setCategories] = useState([]);
   const [plan, setPlan] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+  const [isSendingRequest, setIsSendingRequest] = useState(false);
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
   const dateParam = searchParams.get("date");
@@ -44,19 +46,29 @@ const PlanEdit = () => {
     fetchData();
   }, [accessToken, alert, date]);
 
+  useEffect(() => {
+    if (isFinished && !isSendingRequest) {
+      navigate(`/plan?date=${dateParam}`);
+    }
+  }, [isFinished, isSendingRequest, dateParam, navigate]);
+
   return (
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={date} />
       <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
         {!isLoading ? (
-          <PlanEditList categories={categories} plan={plan} />
+          <PlanEditList
+            categories={categories}
+            plan={plan}
+            isSendingRequest={setIsSendingRequest}
+          />
         ) : (
           <CircularProgress />
         )}
         <Button
           sx={{ alignSelf: "flex-end", mb: 1, mr: 1 }}
           variant="outlined"
-          onClick={() => navigate(`/plan?date=${dateParam}`)}
+          onClick={() => setIsFinished(true)}
         >
           Finish
         </Button>

@@ -5,6 +5,7 @@ import { useOktaAuth } from "@okta/okta-react";
 import PlanEditListCategoryContent from "./PlanEditListCategoryContent";
 import PlanEditListSubcategoryContent from "./PlanEditListSubcategoryContent";
 import NestedList from "../UI/NestedList/NestedList";
+import useSnackbar from "../../hooks/use-snackbar";
 
 const planReducer = (state, action) => {
   if (action.type === "CHANGE_VALUE") {
@@ -29,9 +30,10 @@ const planReducer = (state, action) => {
 };
 
 const PlanEditList = (props) => {
+  const { alert } = useSnackbar();
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
-  const { categories, plan } = props;
+  const { categories, plan, isSendingRequest } = props;
   const { plannedCategories } = plan;
   const [planState, dispatchPlan] = useReducer(
     planReducer,
@@ -80,11 +82,18 @@ const PlanEditList = (props) => {
     );
     const { amount } = subcategory;
     const apiClient = new ApiClient(accessToken);
-    await apiClient.planCategory(
-      subcategory.id,
-      plan.id,
-      amount ? parseInt(amount) : 0
-    );
+    isSendingRequest(true);
+    try {
+      await apiClient.planCategory(
+        subcategory.id,
+        plan.id,
+        amount ? parseInt(amount) : 0
+      );
+    } catch (e) {
+      alert("Cannot update plan", "ERROR");
+    } finally {
+      isSendingRequest(false);
+    }
   };
 
   const getCategoryComponent = (category, clickHandler, isOpen) => {
