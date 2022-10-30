@@ -57,7 +57,11 @@ const Plan = () => {
     apiClient
       .getPlan(date)
       .then((fetchedPlan) => {
-        setPlan(fetchedPlan);
+        if (fetchedPlan.id !== null) {
+          setPlan(fetchedPlan);
+        } else {
+          setPlan(null);
+        }
         setIsLoading(false);
       })
       .catch((e) => {

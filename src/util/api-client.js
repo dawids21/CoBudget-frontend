@@ -30,7 +30,7 @@ class ApiClient {
       throw new Error(e.message);
     }
 
-    const entriesData = data.map((item) => ({
+    return data.map((item) => ({
       id: item.id,
       amount: item.amount,
       date: new Date(item.date),
@@ -39,7 +39,6 @@ class ApiClient {
           ? `${item.category} - ${item.subcategory}`
           : item.subcategory,
     }));
-    return entriesData;
   };
 
   getCategories = async () => {
@@ -120,9 +119,6 @@ class ApiClient {
       }
     );
     if (!response.ok) {
-      if (response.status === 400) {
-        return null;
-      }
       throw new Error("Something went wrong!");
     }
 
