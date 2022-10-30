@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useCallback, useEffect, useState } from "react";
 import AddEntryButton from "../components/Calendar/AddEntryButton";
@@ -8,6 +8,7 @@ import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import Week from "../components/Calendar/Week";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
+import CenterCircularProgress from "../components/UI/CenterCircularProgress";
 
 const getStartDate = (day) => {
   return new Date(
@@ -81,7 +82,7 @@ const Calendar = () => {
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
-        <CircularProgress />
+        <CenterCircularProgress />
       ) : (
         <Week today={todayUTC} days={days} entries={entries} />
       )}

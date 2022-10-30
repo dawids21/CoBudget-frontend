@@ -7,22 +7,26 @@ import SubcategoryContent from "../components/Settings/SubcategoryContent";
 import NestedList from "../components/UI/NestedList/NestedList";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
+import CenterCircularProgress from "../components/UI/CenterCircularProgress";
 
 const Settings = () => {
   const [categories, setCategories] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { authState } = useOktaAuth();
   const alert = useSnackbar();
 
   const { accessToken } = authState.accessToken;
 
   useEffect(() => {
+    setIsLoading(true);
     const apiClient = new ApiClient(accessToken);
     apiClient.getCategories().then((fetchedCategories) => {
       fetchedCategories.forEach(
         (category) => (category.sub = category.subcategories)
       );
       setCategories(fetchedCategories);
+      setIsLoading(false);
     });
   }, [accessToken]);
 
@@ -125,11 +129,15 @@ const Settings = () => {
               <Typography component="h2" variant="h4">
                 Categories
               </Typography>
-              <NestedList
-                data={categories}
-                listComponent={getCategoryComponent}
-                subListComponent={getSubcategoryComponent}
-              />
+              {isLoading ? (
+                <CenterCircularProgress />
+              ) : (
+                <NestedList
+                  data={categories}
+                  listComponent={getCategoryComponent}
+                  subListComponent={getSubcategoryComponent}
+                />
+              )}
               <EditCategories
                 categories={categories}
                 onAddCategory={onAddCategoryHandler}

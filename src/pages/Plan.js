@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -20,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getMonth } from "../util/date-util";
+import CenterCircularProgress from "../components/UI/CenterCircularProgress";
 
 const getStartDate = (day) => {
   return new Date(
@@ -108,7 +108,7 @@ const Plan = () => {
     <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousMonth} onNext={nextMonth} />
-      {isLoading ? <CircularProgress /> : null}
+      {isLoading ? <CenterCircularProgress /> : null}
       {!isLoading && !plan ? (
         <NotPlannedInfo monthName={monthName} onCreateClick={createHandler} />
       ) : null}

@@ -1,8 +1,9 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { toRelativeUrl } from "@okta/okta-auth-js";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import CenterCircularProgress from "../UI/CenterCircularProgress";
 
 const AppSecureRoute = () => {
   const { oktaAuth, authState } = useOktaAuth();
@@ -33,7 +34,7 @@ const AppSecureRoute = () => {
           transform: "translate(-50%,-50%)",
         }}
       >
-        <CircularProgress></CircularProgress>
+        <CenterCircularProgress />
       </Box>
     );
   }

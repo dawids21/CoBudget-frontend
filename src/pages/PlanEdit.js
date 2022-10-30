@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Paper } from "@mui/material";
+import { Box, Button, Paper } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import PlanEditList from "../components/PlanEdit/PlanEditList";
 import MonthAndYear from "../components/UI/MonthAndYear/MonthAndYear";
 import useSnackbar from "../hooks/use-snackbar";
 import ApiClient from "../util/api-client";
+import CenterCircularProgress from "../components/UI/CenterCircularProgress";
 
 const PlanEdit = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const PlanEdit = () => {
             isSendingRequest={setIsSendingRequest}
           />
         ) : (
-          <CircularProgress />
+          <CenterCircularProgress />
         )}
         <Button
           sx={{ alignSelf: "flex-end", mb: 1, mr: 1 }}

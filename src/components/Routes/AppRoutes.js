@@ -1,4 +1,3 @@
-import { CircularProgress } from "@mui/material";
 import { LoginCallback } from "@okta/okta-react";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
@@ -9,6 +8,7 @@ import PlanEdit from "../../pages/PlanEdit";
 import Settings from "../../pages/Settings";
 import AppSecureRoute from "./AppSecureRoute";
 import Login from "../../pages/Login";
+import CenterCircularProgress from "../UI/CenterCircularProgress";
 
 const AppRoutes = () => {
   return (
@@ -17,7 +17,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route
         path="/login/callback"
-        element={<LoginCallback loadingElement={<CircularProgress />} />}
+        element={<LoginCallback loadingElement={<CenterCircularProgress />} />}
       />
       <Route path="/calendar" element={<AppSecureRoute />}>
         <Route path="" element={<Calendar />} />
