@@ -77,7 +77,7 @@ const Calendar = () => {
   };
 
   return (
-    <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
+    <Box sx={{ my: 2, mx: 4, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
