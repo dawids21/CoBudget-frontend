@@ -69,16 +69,21 @@ const Settings = () => {
     });
   };
 
-  const onAddSubategoryHandler = (subcategory) => {
+  const onAddSubcategoryHandler = (subcategory) => {
     setCategories((prevCategories) => {
-      const category = prevCategories.find(
+      const categoryIndex = prevCategories.findIndex(
         (c) => c.id === subcategory.parentId
       );
-      category.subcategories.push({
-        id: subcategory.id,
-        name: subcategory.name,
-      });
-      return prevCategories;
+      const category = prevCategories[categoryIndex];
+      const newSubcategories = [...category.subcategories, subcategory];
+      const newCategory = {
+        ...category,
+        sub: newSubcategories,
+        subcategories: newSubcategories,
+      };
+      const newCategories = [...prevCategories];
+      newCategories[categoryIndex] = newCategory;
+      return newCategories;
     });
   };
 
@@ -128,7 +133,7 @@ const Settings = () => {
               <EditCategories
                 categories={categories}
                 onAddCategory={onAddCategoryHandler}
-                onAddSubcategory={onAddSubategoryHandler}
+                onAddSubcategory={onAddSubcategoryHandler}
                 isEditing={isEditing}
                 onStartEditing={() => setIsEditing(true)}
                 onStopEditing={() => setIsEditing(false)}
