@@ -3,6 +3,7 @@ import UnderDevelopment from "../components/UI/UnderDevelopment";
 import ApiClient from "../util/api-client";
 import { useOktaAuth } from "@okta/okta-react";
 import UploadReceiptForm from "../components/Receipts/UploadReceiptForm";
+import { Container } from "@mui/material";
 
 const Receipts = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -19,7 +20,9 @@ const Receipts = () => {
   }, [accessToken]);
 
   return isEnabled ? (
-    <UploadReceiptForm />
+    <Container sx={{ mt: 2 }}>
+      <UploadReceiptForm />
+    </Container>
   ) : (
     <UnderDevelopment
       sx={{

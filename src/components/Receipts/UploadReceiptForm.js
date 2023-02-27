@@ -1,44 +1,58 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import React from "react";
-import Webcam from "react-webcam";
+import { BrowserView, MobileView } from "react-device-detect";
 
 const UploadReceiptForm = () => {
-  const handleSubmit = (event) => {
-    console.log("Form submitted!");
+  const receiptUploadHandler = (event) => {
+    if (!event.target.files) {
+      return;
+    }
+    console.log("file uploaded!");
   };
-
   return (
-    <Card elevation={2}>
-      <form onSubmit={handleSubmit}>
-        <CardContent>
-          <Typography variant="h5" color="primary.dark">
-            Upload receipt
-          </Typography>
-          <Webcam
-            audio={false}
-            height={720}
-            screenshotFormat="image/jpeg"
-            width={1280}
-            videoConstraints={{
-              width: 1280,
-              height: 720,
-              facingMode: "user",
-            }}
-          >
-            {({ getScreenshot }) => (
-              <Button
-                onClick={() => {
-                  const imageSrc = getScreenshot();
-                  console.log(imageSrc);
-                }}
-              >
-                Capture photo
-              </Button>
-            )}
-          </Webcam>
-        </CardContent>
-      </form>
-    </Card>
+    <Paper
+      sx={{ p: 2, maxWidth: "40rem", textAlign: "center", mx: "auto", mt: 12 }}
+      elevation={2}
+    >
+      <Typography variant="h5" color="primary.dark">
+        Upload receipt
+      </Typography>
+      <BrowserView>
+        <Button sx={{ mt: 2 }} variant="contained" component="label">
+          Upload file
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={receiptUploadHandler}
+          />
+        </Button>
+      </BrowserView>
+      <MobileView>
+        <Button sx={{ mt: 2 }} variant="contained" component="label">
+          Take a picture
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            capture="environment"
+            onChange={receiptUploadHandler}
+          />
+        </Button>
+        <Typography variant="h6" color="primary.dark">
+          or
+        </Typography>
+        <Button variant="contained" component="label">
+          Upload file
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={receiptUploadHandler}
+          />
+        </Button>
+      </MobileView>
+    </Paper>
   );
 };
 
