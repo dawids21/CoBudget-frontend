@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import UnderDevelopment from "../components/UI/UnderDevelopment";
-import { Typography } from "@mui/material";
 import ApiClient from "../util/api-client";
 import { useOktaAuth } from "@okta/okta-react";
+import UploadReceiptForm from "../components/Receipts/UploadReceiptForm";
 
 const Receipts = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -19,7 +19,7 @@ const Receipts = () => {
   }, [accessToken]);
 
   return isEnabled ? (
-    <Typography>Ok</Typography>
+    <UploadReceiptForm />
   ) : (
     <UnderDevelopment
       sx={{
