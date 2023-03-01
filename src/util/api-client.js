@@ -173,6 +173,24 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  areReceiptsEnabled = async () => {
+    const response = await fetch(`${this.backendUrl}receipt/is-enabled`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      return false;
+    }
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      return false;
+    }
+    return data.enabled;
+  };
 }
 
 export default ApiClient;
