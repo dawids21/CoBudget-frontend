@@ -16,7 +16,7 @@ const Login = () => {
     }
   }, [navigate, authState]);
 
-  const { issuer, clientId, redirectUri } = auth;
+  const { issuer, clientId, redirectUri, scopes } = auth;
 
   useEffect(() => {
     if (!widgetRef.current) {
@@ -27,6 +27,7 @@ const Login = () => {
       issuer,
       clientId,
       redirectUri,
+      scopes,
       features: {
         registration: true,
       },
@@ -43,7 +44,7 @@ const Login = () => {
     );
 
     return () => signInWidget.remove();
-  }, [oktaAuth, issuer, clientId, redirectUri]);
+  }, [oktaAuth, issuer, clientId, redirectUri, scopes]);
 
   return (
     <>
