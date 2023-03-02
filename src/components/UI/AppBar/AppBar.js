@@ -1,27 +1,20 @@
 import styled from "@emotion/styled";
-import {
-  AppBar as MUIAppBar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  useMediaQuery,
-} from "@mui/material";
+import {AppBar as MUIAppBar, Box, Button, IconButton, Toolbar, useMediaQuery,} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Drawer from "./Drawer";
-import { useOktaAuth } from "@okta/okta-react";
-import { useNavigate } from "react-router-dom";
+import {useOktaAuth} from "@okta/okta-react";
+import {useNavigate} from "react-router-dom";
 import Logo from "../Logo";
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+const Offset = styled("div")(({theme}) => theme.mixins.toolbar);
 
 const AppBar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isDrawerButtonVisible = useMediaQuery((theme) =>
     theme.breakpoints.down("sm")
   );
-  const { authState, oktaAuth } = useOktaAuth();
+  const {authState, oktaAuth} = useOktaAuth();
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -47,6 +40,10 @@ const AppBar = () => {
         action: () => navigate("/plan"),
       },
       {
+        name: "Receipts",
+        action: () => navigate("/receipts"),
+      },
+      {
         name: "Settings",
         action: () => navigate("/settings"),
       },
@@ -68,7 +65,7 @@ const AppBar = () => {
               edge="start"
               onClick={handleDrawerToggle}
             >
-              <MenuIcon />
+              <MenuIcon/>
             </IconButton>
           )}
           <Box
@@ -81,9 +78,9 @@ const AppBar = () => {
             }}
             onClick={() => navigate("/")}
           >
-            <Logo variant="h4" />
+            <Logo variant="h4"/>
           </Box>
-          <Box sx={{ flexGrow: 1 }}></Box>
+          <Box sx={{flexGrow: 1}}></Box>
           {!isDrawerButtonVisible && (
             <Box>
               {buttons.map((button) => (
@@ -96,9 +93,9 @@ const AppBar = () => {
         </Toolbar>
       </MUIAppBar>
       <Box component="nav">
-        <Drawer open={drawerOpen} toggle={handleDrawerToggle} items={buttons} />
+        <Drawer open={drawerOpen} toggle={handleDrawerToggle} items={buttons}/>
       </Box>
-      <Offset />
+      <Offset/>
     </>
   );
 };

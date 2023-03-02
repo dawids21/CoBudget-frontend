@@ -173,6 +173,39 @@ class ApiClient {
       throw new Error("Something went wrong!");
     }
   };
+
+  areReceiptsEnabled = async () => {
+    const response = await fetch(`${this.backendUrl}receipt/is-enabled`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      return false;
+    }
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      return false;
+    }
+    return data.enabled;
+  };
+
+  uploadReceipt = async (receipt) => {
+    const formData = new FormData();
+    formData.append("receiptFile", receipt, receipt.name);
+    const response = await fetch(`${this.backendUrl}receipt`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong! Try again.");
+    }
+  };
 }
 
 export default ApiClient;
