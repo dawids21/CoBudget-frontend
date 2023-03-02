@@ -1,4 +1,4 @@
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, Paper, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 import ApiClient from "../../util/api-client";
@@ -11,6 +11,7 @@ const UploadReceiptForm = () => {
   const { accessToken } = authState.accessToken;
   const navigate = useNavigate();
   const alert = useSnackbar();
+  const mobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const receiptUploadHandler = async (event) => {
     if (!event.target.files) {
       return;
@@ -28,8 +29,17 @@ const UploadReceiptForm = () => {
   };
   return (
     <Paper
-      sx={{ p: 2, maxWidth: "40rem", textAlign: "center", mx: "auto", mt: 12 }}
-      elevation={2}
+      sx={{
+        p: 2,
+        // maxWidth: "40rem",
+        textAlign: "center",
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%,-50%)",
+        width: mobile ? "100%" : "30rem",
+      }}
+      elevation={mobile ? 0 : 4}
     >
       <Typography variant="h5" color="primary.dark">
         Upload receipt
