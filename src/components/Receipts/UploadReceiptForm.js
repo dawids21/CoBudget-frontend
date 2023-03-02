@@ -1,13 +1,30 @@
 import { Button, Paper, Typography } from "@mui/material";
 import React from "react";
 import { BrowserView, MobileView } from "react-device-detect";
+import ApiClient from "../../util/api-client";
+import { useOktaAuth } from "@okta/okta-react";
+import { useNavigate } from "react-router-dom";
+import useSnackbar from "../../hooks/use-snackbar";
 
 const UploadReceiptForm = () => {
-  const receiptUploadHandler = (event) => {
+  const { authState } = useOktaAuth();
+  const { accessToken } = authState.accessToken;
+  const navigate = useNavigate();
+  const alert = useSnackbar();
+  const receiptUploadHandler = async (event) => {
     if (!event.target.files) {
       return;
     }
-    console.log("file uploaded!");
+    const apiClient = new ApiClient(accessToken);
+    try {
+      await apiClient.uploadReceipt(event.target.files[0]);
+    } catch (e) {
+      alert(e.message, "error");
+      event.target.value = null;
+      return;
+    }
+    alert("Receipt uploaded!", "success");
+    navigate("/calendar");
   };
   return (
     <Paper

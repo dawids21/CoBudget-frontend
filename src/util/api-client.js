@@ -191,6 +191,21 @@ class ApiClient {
     }
     return data.enabled;
   };
+
+  uploadReceipt = async (receipt) => {
+    const formData = new FormData();
+    formData.append("receiptFile", receipt, receipt.name);
+    const response = await fetch(`${this.backendUrl}receipt`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong! Try again.");
+    }
+  };
 }
 
 export default ApiClient;
