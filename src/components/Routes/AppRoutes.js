@@ -10,6 +10,7 @@ import AppSecureRoute from "./AppSecureRoute";
 import Login from "../../pages/Login";
 import CenterCircularProgress from "../UI/CenterCircularProgress";
 import Receipts from "../../pages/Receipts";
+import ReceiptsDisplay from "../../pages/ReceiptsDisplay";
 
 const AppRoutes = () => {
   return (
@@ -34,6 +35,9 @@ const AppRoutes = () => {
       </Route>
       <Route path="/receipts" element={<AppSecureRoute/>}>
         <Route path="" element={<Receipts/>}/>
+      </Route>
+      <Route path="/receipts/display" element={<AppSecureRoute/>}>
+        <Route path="" element={<ReceiptsDisplay/>}/>
       </Route>
     </Routes>
   );

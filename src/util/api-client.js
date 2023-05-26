@@ -205,6 +205,11 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Something went wrong! Try again.");
     }
+    try {
+      return await response.json();
+    } catch (e) {
+      throw new Error("Something went wrong! Try again.");
+    }
   };
 }
 

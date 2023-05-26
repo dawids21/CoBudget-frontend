@@ -1,21 +1,14 @@
-import {
-  Backdrop,
-  Button,
-  CircularProgress,
-  Paper,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import React, { useState } from "react";
-import { BrowserView, MobileView } from "react-device-detect";
+import {Backdrop, Button, CircularProgress, Paper, Typography, useMediaQuery,} from "@mui/material";
+import React, {useState} from "react";
+import {BrowserView, MobileView} from "react-device-detect";
 import ApiClient from "../../util/api-client";
-import { useOktaAuth } from "@okta/okta-react";
-import { useNavigate } from "react-router-dom";
+import {useOktaAuth} from "@okta/okta-react";
+import {useNavigate} from "react-router-dom";
 import useSnackbar from "../../hooks/use-snackbar";
 
 const UploadReceiptForm = () => {
-  const { authState } = useOktaAuth();
-  const { accessToken } = authState.accessToken;
+  const {authState} = useOktaAuth();
+  const {accessToken} = authState.accessToken;
   const navigate = useNavigate();
   const alert = useSnackbar();
   const mobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
@@ -26,8 +19,9 @@ const UploadReceiptForm = () => {
     }
     setIsUploading(true);
     const apiClient = new ApiClient(accessToken);
+    let receipt;
     try {
-      await apiClient.uploadReceipt(event.target.files[0]);
+      receipt = await apiClient.uploadReceipt(event.target.files[0]);
     } catch (e) {
       setIsUploading(false);
       alert(e.message, "error");
@@ -36,7 +30,7 @@ const UploadReceiptForm = () => {
     }
     setIsUploading(false);
     alert("Receipt uploaded!", "success");
-    navigate("/calendar");
+    navigate("/receipts/display", {state: {receipt}});
   };
   return (
     <Paper
@@ -58,13 +52,13 @@ const UploadReceiptForm = () => {
         }}
         open={isUploading}
       >
-        <CircularProgress />
+        <CircularProgress/>
       </Backdrop>
       <Typography variant="h5" color="primary.dark">
         Upload receipt
       </Typography>
       <BrowserView>
-        <Button sx={{ mt: 2 }} variant="contained" component="label">
+        <Button sx={{mt: 2}} variant="contained" component="label">
           Upload file
           <input
             type="file"
@@ -75,7 +69,7 @@ const UploadReceiptForm = () => {
         </Button>
       </BrowserView>
       <MobileView>
-        <Button sx={{ mt: 2 }} variant="contained" component="label">
+        <Button sx={{mt: 2}} variant="contained" component="label">
           Take a picture
           <input
             type="file"

@@ -1,17 +1,26 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
+import { useOktaAuth } from "@okta/okta-react";
 import UnderDevelopment from "../components/UI/UnderDevelopment";
+import ReceiptData from "../components/ReceiptsDisplay/ReceiptData";
+import { useLocation, useNavigate } from "react-router-dom";
 import ApiClient from "../util/api-client";
-import {useOktaAuth} from "@okta/okta-react";
-import UploadReceiptForm from "../components/Receipts/UploadReceiptForm";
 
-const Receipts = () => {
+const ReceiptsDisplay = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "CoBudget - receipts";
   }, []);
+
+  useEffect(() => {
+    if (!state) {
+      navigate("/receipts", { replace: true });
+    }
+  }, [state, navigate]);
 
   useEffect(() => {
     const apiClient = new ApiClient(accessToken);
@@ -19,7 +28,7 @@ const Receipts = () => {
   }, [accessToken]);
 
   return isEnabled ? (
-    <UploadReceiptForm />
+    <ReceiptData receipt={state.receipt} />
   ) : (
     <UnderDevelopment
       sx={{
@@ -34,4 +43,4 @@ const Receipts = () => {
   );
 };
 
-export default Receipts;
+export default ReceiptsDisplay;
