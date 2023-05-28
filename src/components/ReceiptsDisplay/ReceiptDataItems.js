@@ -1,10 +1,10 @@
 import ReceiptDataItem from "./ReceiptDataItem";
 
-const ReceiptDataItems = ({ items }) => {
+const ReceiptDataItems = ({ items, categories }) => {
   return (
     <>
       {items.map((item) => (
-        <ReceiptDataItem key={item.order} item={item} />
+        <ReceiptDataItem key={item.order} item={item} categories={categories} />
       ))}
     </>
   );
