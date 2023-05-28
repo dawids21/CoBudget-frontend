@@ -9,7 +9,7 @@ import React, { useMemo } from "react";
 import useInput from "../../hooks/use-input";
 import Grid from "@mui/material/Unstable_Grid2";
 
-const ReceiptDataItem = ({ item, categories }) => {
+const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
   const categoryInput = useInput((value) => value);
   const subcategoryInput = useInput((value) => value);
 
@@ -22,10 +22,12 @@ const ReceiptDataItem = ({ item, categories }) => {
 
   const changeCategoryHandler = (event) => {
     categoryInput.valueChangeHandler(event);
+    onCategoryChangeHandler(event.target.value, "");
     subcategoryInput.reset();
   };
   const changeSubcategoryHandler = (event) => {
     subcategoryInput.valueChangeHandler(event);
+    onCategoryChangeHandler(categoryInput.value, event.target.value);
   };
   return (
     <Grid container columnSpacing={2} alignItems="center">

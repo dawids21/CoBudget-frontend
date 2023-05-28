@@ -7,10 +7,30 @@ import { useOktaAuth } from "@okta/okta-react";
 import useSnackbar from "../../hooks/use-snackbar";
 
 const ReceiptData = ({ receipt }) => {
+  const [items, setItems] = useState(
+    receipt.lineItems.map((item) => ({
+      id: item.order,
+      description: item.description,
+      category: "",
+      subcategory: "",
+      total: item.total,
+    }))
+  );
   const [categories, setCategories] = useState([]);
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
   const alert = useSnackbar();
+  
+  const onCategoryChangeHandler = (itemId, category, subcategory) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId
+          ? { ...item, category: category, subcategory: subcategory }
+          : item
+      )
+    );
+  };
+
 
   useEffect(() => {
     const apiClient = new ApiClient(accessToken);
@@ -28,7 +48,7 @@ const ReceiptData = ({ receipt }) => {
         <Stack spacing={2}>
           <ReceiptDataSummary receipt={receipt} />
           <Divider />
-          <ReceiptDataItems items={receipt.lineItems} categories={categories} />
+          <ReceiptDataItems items={items} categories={categories} onCategoryChangeHandler={onCategoryChangeHandler} />
         </Stack>
       </Paper>
     </Container>
