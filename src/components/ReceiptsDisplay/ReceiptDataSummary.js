@@ -13,6 +13,7 @@ const ReceiptDataSummary = ({
   receipt,
   categories,
   onReceiptCategoryChangeHandler,
+  isMobile,
 }) => {
   const categoryInput = useInput((value) => value);
   const subcategoryInput = useInput((value) => value);
@@ -55,11 +56,20 @@ const ReceiptDataSummary = ({
           {total}$
         </Typography>
       </Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h5" color="primary.dark" alignSelf="center">
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        alignItems={isMobile ? "flex-start" : "center"}
+        justifyContent="space-between"
+      >
+        <Typography variant="h5" color="primary.dark">
           Category:
         </Typography>
-        <FormControl variant="standard" margin="normal" sx={{ minWidth: 200 }}>
+        <FormControl
+          variant="standard"
+          margin="normal"
+          fullWidth={isMobile}
+          sx={{ minWidth: { sm: 200 } }}
+        >
           <Select
             labelId="category"
             id="category"
@@ -77,11 +87,20 @@ const ReceiptDataSummary = ({
           </Select>
         </FormControl>
       </Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h5" color="primary.dark" alignSelf="center">
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        alignItems={isMobile ? "flex-start" : "center"}
+        justifyContent="space-between"
+      >
+        <Typography variant="h5" color="primary.dark">
           Subcategory:
         </Typography>
-        <FormControl variant="standard" margin="normal" sx={{ minWidth: 200 }}>
+        <FormControl
+          variant="standard"
+          margin="normal"
+          fullWidth={isMobile}
+          sx={{ minWidth: { sm: 200 } }}
+        >
           <Select
             labelId="subcategory"
             id="subcategory"

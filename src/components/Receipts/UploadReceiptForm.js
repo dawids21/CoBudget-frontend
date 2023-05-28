@@ -11,6 +11,7 @@ const UploadReceiptForm = () => {
   const {accessToken} = authState.accessToken;
   const navigate = useNavigate();
   const alert = useSnackbar();
+  // @ts-ignore
   const mobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [isUploading, setIsUploading] = useState(false);
   const receiptUploadHandler = async (event) => {

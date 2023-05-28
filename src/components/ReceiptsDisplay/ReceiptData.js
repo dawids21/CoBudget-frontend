@@ -1,4 +1,4 @@
-import { Container, Divider, Paper, Stack } from "@mui/material";
+import { Button, Container, Divider, Paper, Stack, useMediaQuery } from "@mui/material";
 import ReceiptDataSummary from "./ReceiptDataSummary";
 import ReceiptDataItems from "./ReceiptDataItems";
 import { useEffect, useState } from "react";
@@ -20,7 +20,9 @@ const ReceiptData = ({ receipt }) => {
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
   const alert = useSnackbar();
-  
+  // @ts-ignore
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   const onReceiptCategoryChangeHandler = (category, subcategory) => {
     setItems((prevItems) =>
       prevItems.map((item) => ({ ...item, category, subcategory }))
@@ -36,6 +38,8 @@ const ReceiptData = ({ receipt }) => {
       )
     );
   };
+
+  const onReceiptSaveHandler = () => {};
 
   useEffect(() => {
     const apiClient = new ApiClient(accessToken);
@@ -55,13 +59,26 @@ const ReceiptData = ({ receipt }) => {
             receipt={receipt}
             categories={categories}
             onReceiptCategoryChangeHandler={onReceiptCategoryChangeHandler}
+            isMobile={isMobile}
           />
           <Divider />
           <ReceiptDataItems
             items={items}
             categories={categories}
             onCategoryChangeHandler={onCategoryChangeHandler}
+            isMobile={isMobile}
           />
+        </Stack>
+        <Stack direction="row" justifyContent="flex-end" spacing={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
+            onClick={onReceiptSaveHandler}
+            fullWidth={isMobile}
+          >
+            Save
+          </Button>
         </Stack>
       </Paper>
     </Container>
