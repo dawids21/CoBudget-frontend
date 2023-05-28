@@ -6,28 +6,21 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
-import useInput from "../../hooks/use-input";
 import Grid from "@mui/material/Unstable_Grid2";
 
 const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
-  const categoryInput = useInput((value) => value);
-  const subcategoryInput = useInput((value) => value);
-
   const subcategories = useMemo(() => {
     const category = categories.find(
-      (category) => category.name === categoryInput.value
+      (category) => category.name === item.category
     );
     return category ? category.subcategories : [];
-  }, [categoryInput.value, categories]);
+  }, [item.category, categories]);
 
   const changeCategoryHandler = (event) => {
-    categoryInput.valueChangeHandler(event);
     onCategoryChangeHandler(event.target.value, "");
-    subcategoryInput.reset();
   };
   const changeSubcategoryHandler = (event) => {
-    subcategoryInput.valueChangeHandler(event);
-    onCategoryChangeHandler(categoryInput.value, event.target.value);
+    onCategoryChangeHandler(item.category, event.target.value);
   };
   return (
     <Grid container columnSpacing={2} alignItems="center">
@@ -43,10 +36,8 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
             labelId="category"
             id="category"
             label="Category"
-            value={categoryInput.value}
+            value={item.category}
             onChange={changeCategoryHandler}
-            onBlur={categoryInput.inputBlurHandler}
-            error={categoryInput.hasError}
           >
             {categories.map((category) => (
               <MenuItem key={category.id} value={category.name}>
@@ -63,10 +54,8 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
             labelId="subcategory"
             id="subcategory"
             label="Subcategory"
-            value={subcategoryInput.value}
+            value={item.subcategory}
             onChange={changeSubcategoryHandler}
-            onBlur={subcategoryInput.inputBlurHandler}
-            error={subcategoryInput.hasError}
           >
             {subcategories.map((subcategory) => (
               <MenuItem key={subcategory.id} value={subcategory.name}>

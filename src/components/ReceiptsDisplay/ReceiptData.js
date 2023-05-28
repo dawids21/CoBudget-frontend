@@ -21,6 +21,12 @@ const ReceiptData = ({ receipt }) => {
   const { accessToken } = authState.accessToken;
   const alert = useSnackbar();
   
+  const onReceiptCategoryChangeHandler = (category, subcategory) => {
+    setItems((prevItems) =>
+      prevItems.map((item) => ({ ...item, category, subcategory }))
+    );
+  };
+
   const onCategoryChangeHandler = (itemId, category, subcategory) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
@@ -30,7 +36,6 @@ const ReceiptData = ({ receipt }) => {
       )
     );
   };
-
 
   useEffect(() => {
     const apiClient = new ApiClient(accessToken);
@@ -46,9 +51,17 @@ const ReceiptData = ({ receipt }) => {
     <Container sx={{ mt: 4 }}>
       <Paper elevation={2} sx={{ p: 4, m: "auto", maxWidth: 800 }}>
         <Stack spacing={2}>
-          <ReceiptDataSummary receipt={receipt} />
+          <ReceiptDataSummary
+            receipt={receipt}
+            categories={categories}
+            onReceiptCategoryChangeHandler={onReceiptCategoryChangeHandler}
+          />
           <Divider />
-          <ReceiptDataItems items={items} categories={categories} onCategoryChangeHandler={onCategoryChangeHandler} />
+          <ReceiptDataItems
+            items={items}
+            categories={categories}
+            onCategoryChangeHandler={onCategoryChangeHandler}
+          />
         </Stack>
       </Paper>
     </Container>
