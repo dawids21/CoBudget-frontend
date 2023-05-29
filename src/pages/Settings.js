@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
 import CategoryContent from "../components/Settings/CategoryContent";
@@ -114,7 +121,7 @@ const Settings = () => {
   };
 
   return (
-    <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
+    <Container sx={{ mt: 2, textAlign: "center" }}>
       <Grid container>
         <Grid item xs={12}>
           <Card
@@ -150,7 +157,7 @@ const Settings = () => {
           </Card>
         </Grid>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 

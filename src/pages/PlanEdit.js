@@ -1,4 +1,4 @@
-import { Box, Button, Paper } from "@mui/material";
+import { Box, Button, Container, Paper } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -54,7 +54,7 @@ const PlanEdit = () => {
   }, [isFinished, isSendingRequest, dateParam, navigate]);
 
   return (
-    <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
+    <Container sx={{ mt: 2, textAlign: "center" }}>
       <MonthAndYear date={date} />
       <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
         {!isLoading ? (
@@ -74,7 +74,7 @@ const PlanEdit = () => {
           Finish
         </Button>
       </Paper>
-    </Box>
+    </Container>
   );
 };
 

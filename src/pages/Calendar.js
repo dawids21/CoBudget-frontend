@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useCallback, useEffect, useState } from "react";
 import AddEntryButton from "../components/Calendar/AddEntryButton";
@@ -78,7 +78,7 @@ const Calendar = () => {
   };
 
   return (
-    <Box sx={{ my: 2, mx: 4, textAlign: "center" }}>
+    <Container sx={{ my: 2, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousWeek} onNext={nextWeek} />
       {isLoading ? (
@@ -92,7 +92,7 @@ const Calendar = () => {
         onClose={closeDialog}
         onAdd={fetchEntries}
       />
-    </Box>
+    </Container>
   );
 };
 

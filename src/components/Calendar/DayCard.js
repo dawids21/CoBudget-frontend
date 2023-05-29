@@ -16,7 +16,7 @@ const DayCard = (props) => {
     const { today, day, entries } = props;
 
     return (
-      <Paper elevation={4} sx={{ padding: 2 }}>
+      <Paper elevation={4} sx={{ padding: 2, height: "100%" }}>
         <Box
           sx={{
             display: "flex",

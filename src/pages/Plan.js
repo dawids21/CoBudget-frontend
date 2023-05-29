@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -109,7 +110,7 @@ const Plan = () => {
   };
 
   return (
-    <Box sx={{ mt: 2, mx: 4, textAlign: "center" }}>
+    <Container sx={{ mt: 2, textAlign: "center" }}>
       <MonthAndYear date={start} />
       <PreviousNextButtons onPrevious={previousMonth} onNext={nextMonth} />
       {isLoading ? <CenterCircularProgress /> : null}
@@ -157,7 +158,7 @@ const Plan = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Container>
   );
 };
 
