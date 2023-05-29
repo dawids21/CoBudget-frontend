@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
@@ -12,17 +13,18 @@ import useInput from "../../hooks/use-input";
 const ReceiptDataSummary = ({
   receipt,
   categories,
+  date,
   onReceiptCategoryChangeHandler,
+  onDateChangeHandler,
   isMobile,
 }) => {
   const categoryInput = useInput((value) => value);
   const subcategoryInput = useInput((value) => value);
-  const { date, total } = receipt;
-  const formatted = new Date(Date.parse(date)).toLocaleDateString("default", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const dateInput = useInput(
+    (value) => value,
+    date.toISOString().split("T")[0]
+  );
+  const { total } = receipt;
   const subcategories = useMemo(() => {
     const category = categories.find(
       (category) => category.name === categoryInput.value
@@ -42,25 +44,41 @@ const ReceiptDataSummary = ({
     const subcategory = category.subcategories.find(
       (subcategory) => subcategory.name === event.target.value
     );
-    onReceiptCategoryChangeHandler(categoryInput.value, subcategory.name, subcategory.id);
+    onReceiptCategoryChangeHandler(
+      categoryInput.value,
+      subcategory.name,
+      subcategory.id
+    );
+  };
+  const changeDateHandler = (event) => {
+    const newDate = new Date(event.target.value);
+    dateInput.valueChangeHandler(event);
+    onDateChangeHandler(newDate);
   };
   return (
     <Stack direction="column" justifyContent="center" spacing={2}>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction={isMobile ? "column" : "row"}
+        alignItems={isMobile ? "flex-start" : "center"}
+        justifyContent="space-between"
+      >
         <Typography variant="h5" color="primary.dark">
           Date:
         </Typography>
-        <Typography variant="h5" color="primary.dark">
-          {formatted}
-        </Typography>
-      </Stack>
-      <Stack direction="row" justifyContent="space-between">
-        <Typography variant="h5" color="primary.dark">
-          Total:
-        </Typography>
-        <Typography variant="h5" color="primary.dark">
-          {total}$
-        </Typography>
+        <TextField
+          margin="normal"
+          id="date"
+          label="Date"
+          type="date"
+          fullWidth={isMobile}
+          value={dateInput.value}
+          onChange={changeDateHandler}
+          onBlur={dateInput.inputBlurHandler}
+          error={dateInput.hasError}
+          InputLabelProps={{ shrink: true }}
+          variant="standard"
+          sx={{ minWidth: { sm: 200 } }}
+        />
       </Stack>
       <Stack
         direction={isMobile ? "column" : "row"}
@@ -123,6 +141,14 @@ const ReceiptDataSummary = ({
             ))}
           </Select>
         </FormControl>
+      </Stack>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h5" color="primary.dark">
+          Total:
+        </Typography>
+        <Typography variant="h5" color="primary.dark">
+          {total}$
+        </Typography>
       </Stack>
     </Stack>
   );

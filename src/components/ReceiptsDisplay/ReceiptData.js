@@ -19,6 +19,7 @@ const ReceiptData = ({ receipt }) => {
     }))
   );
   const [categories, setCategories] = useState([]);
+  const [date, setDate] = useState(new Date(Date.parse(receipt.date)));
   const [isValid, setIsValid] = useState(false);
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
@@ -34,12 +35,13 @@ const ReceiptData = ({ receipt }) => {
         item.subcategory !== "" &&
         item.categoryId !== null
     );
-    setIsValid(valid);
+    const dateValid = date !== null;
+    setIsValid(valid && dateValid);
   };
 
   useEffect(() => {
     validateItems();
-  }, [items]);
+  }, [items, date]);
 
   const onReceiptCategoryChangeHandler = (
     category,
@@ -88,7 +90,7 @@ const ReceiptData = ({ receipt }) => {
 
       return {
         amount: -total,
-        date: new Date(Date.parse(receipt.date)),
+        date: date,
         categoryId: +categoryId,
       };
     });
@@ -118,7 +120,9 @@ const ReceiptData = ({ receipt }) => {
           <ReceiptDataSummary
             receipt={receipt}
             categories={categories}
+            date={date}
             onReceiptCategoryChangeHandler={onReceiptCategoryChangeHandler}
+            onDateChangeHandler={setDate}
             isMobile={isMobile}
           />
           <Divider />
