@@ -12,20 +12,20 @@ const ReceiptDataItems = ({
       {items.map((item) =>
         isMobile ? (
           <ReceiptDataAccordionItem
-            key={item.order}
+            key={item.id}
             item={item}
             categories={categories}
-            onCategoryChangeHandler={(category, subcategory) =>
-              onCategoryChangeHandler(item.id, category, subcategory)
+            onCategoryChangeHandler={(category, subcategory, categoryId) =>
+              onCategoryChangeHandler(item.id, category, subcategory, categoryId)
             }
           />
         ) : (
           <ReceiptDataItem
-            key={item.order}
+            key={item.id}
             item={item}
             categories={categories}
-            onCategoryChangeHandler={(category, subcategory) =>
-              onCategoryChangeHandler(item.id, category, subcategory)
+            onCategoryChangeHandler={(category, subcategory, categoryId) =>
+              onCategoryChangeHandler(item.id, category, subcategory, categoryId)
             }
           />
         )

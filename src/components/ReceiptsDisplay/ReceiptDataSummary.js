@@ -31,12 +31,18 @@ const ReceiptDataSummary = ({
   }, [categoryInput.value, categories]);
   const changeCategoryHandler = (event) => {
     categoryInput.valueChangeHandler(event);
-    onReceiptCategoryChangeHandler(event.target.value, "");
+    onReceiptCategoryChangeHandler(event.target.value, "", null);
     subcategoryInput.reset();
   };
   const changeSubcategoryHandler = (event) => {
     subcategoryInput.valueChangeHandler(event);
-    onReceiptCategoryChangeHandler(categoryInput.value, event.target.value);
+    const category = categories.find(
+      (category) => category.name === categoryInput.value
+    );
+    const subcategory = category.subcategories.find(
+      (subcategory) => subcategory.name === event.target.value
+    );
+    onReceiptCategoryChangeHandler(categoryInput.value, subcategory.name, subcategory.id);
   };
   return (
     <Stack direction="column" justifyContent="center" spacing={2}>

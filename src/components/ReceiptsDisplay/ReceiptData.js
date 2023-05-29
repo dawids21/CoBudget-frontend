@@ -13,27 +13,57 @@ const ReceiptData = ({ receipt }) => {
       description: item.description,
       category: "",
       subcategory: "",
+      categoryId: null,
       total: item.total,
     }))
   );
   const [categories, setCategories] = useState([]);
+  const [isValid, setIsValid] = useState(false);
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
   const alert = useSnackbar();
   // @ts-ignore
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const onReceiptCategoryChangeHandler = (category, subcategory) => {
+  const validateItems = () => {
+    const valid = items.every(
+      (item) =>
+        item.category !== "" &&
+        item.subcategory !== "" &&
+        item.categoryId !== null
+    );
+    setIsValid(valid);
+  };
+
+  useEffect(() => {
+    validateItems();
+  }, [items]);
+
+  const onReceiptCategoryChangeHandler = (
+    category,
+    subcategory,
+    categoryId
+  ) => {
     setItems((prevItems) =>
-      prevItems.map((item) => ({ ...item, category, subcategory }))
+      prevItems.map((item) => ({ ...item, category, subcategory, categoryId }))
     );
   };
 
-  const onCategoryChangeHandler = (itemId, category, subcategory) => {
+  const onCategoryChangeHandler = (
+    itemId,
+    category,
+    subcategory,
+    categoryId
+  ) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === itemId
-          ? { ...item, category: category, subcategory: subcategory }
+          ? {
+              ...item,
+              category: category,
+              subcategory: subcategory,
+              categoryId,
+            }
           : item
       )
     );
@@ -76,6 +106,7 @@ const ReceiptData = ({ receipt }) => {
             sx={{ mt: 2 }}
             onClick={onReceiptSaveHandler}
             fullWidth={isMobile}
+            disabled={!isValid}
           >
             Save
           </Button>

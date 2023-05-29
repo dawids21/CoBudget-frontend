@@ -28,7 +28,10 @@ const ReceiptDataAccordionItem = ({
     onCategoryChangeHandler(event.target.value, "");
   };
   const changeSubcategoryHandler = (event) => {
-    onCategoryChangeHandler(item.category, event.target.value);
+    const subcategory = subcategories.find(
+      (subcategory) => subcategory.name === event.target.value
+    );
+    onCategoryChangeHandler(item.category, subcategory.name, subcategory.id);
   };
   return (
     <Accordion>

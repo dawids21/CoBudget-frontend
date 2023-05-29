@@ -20,7 +20,10 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
     onCategoryChangeHandler(event.target.value, "");
   };
   const changeSubcategoryHandler = (event) => {
-    onCategoryChangeHandler(item.category, event.target.value);
+    const subcategory = subcategories.find(
+      (subcategory) => subcategory.name === event.target.value
+    );
+    onCategoryChangeHandler(item.category, subcategory.name, subcategory.id);
   };
   return (
     <Grid container columnSpacing={2} alignItems="center">
