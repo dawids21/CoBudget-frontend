@@ -75,6 +75,12 @@ class ApiClient {
     }
   };
 
+  addEntries = async (entries) => {
+    for (const entry of entries) {
+      await this.addEntry(entry);
+    }
+  };
+
   addCategory = async (category) => {
     const response = await fetch(`${this.backendUrl}api/category`, {
       method: "POST",

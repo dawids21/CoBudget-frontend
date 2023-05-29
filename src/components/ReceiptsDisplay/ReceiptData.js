@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ApiClient from "../../util/api-client";
 import { useOktaAuth } from "@okta/okta-react";
 import useSnackbar from "../../hooks/use-snackbar";
+import { useNavigate } from "react-router-dom";
 
 const ReceiptData = ({ receipt }) => {
   const [items, setItems] = useState(
@@ -22,6 +23,7 @@ const ReceiptData = ({ receipt }) => {
   const { authState } = useOktaAuth();
   const { accessToken } = authState.accessToken;
   const alert = useSnackbar();
+  const navigate = useNavigate();
   // @ts-ignore
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -69,7 +71,35 @@ const ReceiptData = ({ receipt }) => {
     );
   };
 
-  const onReceiptSaveHandler = () => {};
+  const onReceiptSaveHandler = () => {
+    const apiClient = new ApiClient(accessToken);
+    const groupedItems = items.reduce((acc, item) => {
+      const { categoryId } = item;
+      if (!acc[categoryId]) {
+        acc[categoryId] = [];
+      }
+      acc[categoryId].push(item);
+      return acc;
+    }, {});
+    const entries = Object.keys(groupedItems).map((categoryId) => {
+      const total = groupedItems[categoryId]
+        .reduce((acc, item) => acc + item.total, 0)
+        .toFixed(2);
+
+      return {
+        amount: -total,
+        date: new Date(Date.parse(receipt.date)),
+        categoryId: +categoryId,
+      };
+    });
+    apiClient
+      .addEntries(entries)
+      .then(() => {
+        alert("Receipt saved", "success");
+        navigate("/calendar", { replace: true });
+      })
+      .catch((error) => alert(error.message, "error"));
+  };
 
   useEffect(() => {
     const apiClient = new ApiClient(accessToken);

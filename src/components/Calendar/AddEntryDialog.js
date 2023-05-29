@@ -25,6 +25,7 @@ import useInput from "../../hooks/use-input";
 
 const AddEntryDialog = (props) => {
   const { authState } = useOktaAuth();
+  // @ts-ignore
   const isFullscreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [categories, setCategories] = useState([]);
   const alert = useSnackbar();
