@@ -1,5 +1,6 @@
 import { ListItemText, Typography } from "@mui/material";
 import React from "react";
+import { formatCurrency } from "../../util/money-util";
 
 const PlanInfoSubcategoryContent = (props) => {
   const { subcategory } = props;
@@ -7,7 +8,7 @@ const PlanInfoSubcategoryContent = (props) => {
     <>
       <ListItemText primary={subcategory.name} />
       <Typography variant="h6" sx={{ mr: 1 }}>
-        {subcategory.amount}$
+        {formatCurrency(subcategory.amount)}
       </Typography>
     </>
   );

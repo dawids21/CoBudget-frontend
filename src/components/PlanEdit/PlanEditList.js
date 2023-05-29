@@ -71,7 +71,7 @@ const PlanEditList = (props) => {
       type: "CHANGE_VALUE",
       categoryId,
       subcategoryId,
-      value: event.target.value,
+      value: Math.round(parseFloat(event.target.value) * 100),
     });
   };
 
@@ -110,11 +110,10 @@ const PlanEditList = (props) => {
     return (
       <PlanEditListSubcategoryContent
         subcategory={subcategory}
-        onChange={changeSubcategoryHandler.bind(
-          null,
-          category.id,
-          subcategory.id
-        )}
+        amount={subcategory.amount / 100}
+        onChange={(event) =>
+          changeSubcategoryHandler(category.id, subcategory.id, event)
+        }
         onBlur={blurSubcategoryHandler.bind(null, category.id, subcategory.id)}
       />
     );

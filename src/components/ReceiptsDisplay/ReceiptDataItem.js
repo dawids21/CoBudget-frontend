@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import React, { useMemo } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
+import { formatCurrency } from "../../util/money-util";
 
 const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
   const subcategories = useMemo(() => {
@@ -70,7 +71,7 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
       </Grid>
       <Grid xs={2}>
         <Typography variant="h6" color="primary.dark" sx={{ px: 4 }}>
-          {item.total}$
+          {formatCurrency(item.total)}
         </Typography>
       </Grid>
     </Grid>

@@ -10,6 +10,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Radio,
@@ -22,6 +23,7 @@ import { useOktaAuth } from "@okta/okta-react";
 import useSnackbar from "../../hooks/use-snackbar";
 import ApiClient from "../../util/api-client";
 import useInput from "../../hooks/use-input";
+import { getCurrencySymbol } from "../../util/money-util";
 
 const AddEntryDialog = (props) => {
   const { authState } = useOktaAuth();
@@ -33,7 +35,9 @@ const AddEntryDialog = (props) => {
     (value) => (value && value === "expense") || value === "income",
     "expense"
   );
-  const amountInput = useInput((value) => value && value >= 0);
+  const amountInput = useInput(
+    (value) => value && value >= 0 && value === value
+  );
   const dateInput = useInput(
     (value) => value,
     new Date().toISOString().split("T")[0]
@@ -94,11 +98,10 @@ const AddEntryDialog = (props) => {
       const subcategory = subcategories.find(
         (subcategory) => subcategory.name === subcategoryInput.value
       );
+      const amount = Math.round(parseFloat(amountInput.value) * 100);
       const entry = {
         amount:
-          typeInput.value === "expense"
-            ? -Math.abs(amountInput.value)
-            : Math.abs(amountInput.value),
+          typeInput.value === "expense" ? -Math.abs(amount) : Math.abs(amount),
         date: dateInput.value,
         categoryId: subcategory.id,
       };
@@ -151,6 +154,13 @@ const AddEntryDialog = (props) => {
               type="number"
               fullWidth
               variant="standard"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {getCurrencySymbol()}
+                  </InputAdornment>
+                ),
+              }}
               value={amountInput.value}
               onChange={amountInput.valueChangeHandler}
               onBlur={amountInput.inputBlurHandler}

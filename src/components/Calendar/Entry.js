@@ -1,5 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
+import { formatCurrency } from "../../util/money-util";
 
 const Entry = (props) => {
   const { amount, category } = props;
@@ -19,7 +20,7 @@ const Entry = (props) => {
             color: amount > 0 ? "primary.main" : "secondary.main",
           }}
         >
-          {amount}$
+          {formatCurrency(amount)}
         </Typography>
         <Typography variant="h6" align="center">
           {category}

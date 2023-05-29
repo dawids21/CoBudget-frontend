@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import React, { useMemo } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { formatCurrency } from "../../util/money-util";
 
 const ReceiptDataAccordionItem = ({
   item,
@@ -41,7 +42,7 @@ const ReceiptDataAccordionItem = ({
             {item.description}
           </Typography>
           <Typography variant="h6" color="primary.dark">
-            {item.total}$
+            {formatCurrency(item.total)}
           </Typography>
         </Stack>
       </AccordionSummary>

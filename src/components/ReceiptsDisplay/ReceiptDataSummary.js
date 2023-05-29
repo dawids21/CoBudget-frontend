@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import useInput from "../../hooks/use-input";
+import { formatCurrency } from "../../util/money-util";
 
 const ReceiptDataSummary = ({
   receipt,
@@ -147,7 +148,7 @@ const ReceiptDataSummary = ({
           Total:
         </Typography>
         <Typography variant="h5" color="primary.dark">
-          {total}$
+          {formatCurrency(total)}
         </Typography>
       </Stack>
     </Stack>

@@ -2,8 +2,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "checkJs": true,
-    "jsx": "preserve",
-    // "baseUrl": "./src"
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "build"]
 }
