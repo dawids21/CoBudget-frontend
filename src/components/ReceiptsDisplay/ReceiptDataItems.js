@@ -5,6 +5,7 @@ const ReceiptDataItems = ({
   items,
   categories,
   onCategoryChangeHandler,
+  onTotalChangeHandler,
   isMobile,
 }) => {
   return (
@@ -16,7 +17,15 @@ const ReceiptDataItems = ({
             item={item}
             categories={categories}
             onCategoryChangeHandler={(category, subcategory, categoryId) =>
-              onCategoryChangeHandler(item.id, category, subcategory, categoryId)
+              onCategoryChangeHandler(
+                item.id,
+                category,
+                subcategory,
+                categoryId
+              )
+            }
+            onTotalChangeHandler={(total) =>
+              onTotalChangeHandler(item.id, total)
             }
           />
         ) : (
@@ -25,7 +34,15 @@ const ReceiptDataItems = ({
             item={item}
             categories={categories}
             onCategoryChangeHandler={(category, subcategory, categoryId) =>
-              onCategoryChangeHandler(item.id, category, subcategory, categoryId)
+              onCategoryChangeHandler(
+                item.id,
+                category,
+                subcategory,
+                categoryId
+              )
+            }
+            onTotalChangeHandler={(total) =>
+              onTotalChangeHandler(item.id, total)
             }
           />
         )

@@ -19,6 +19,7 @@ const ReceiptData = ({ receipt }) => {
     }))
   );
   const [categories, setCategories] = useState([]);
+  const [total, setTotal] = useState(receipt.total);
   const [date, setDate] = useState(new Date(Date.parse(receipt.date)));
   const [isValid, setIsValid] = useState(false);
   const { authState } = useOktaAuth();
@@ -73,6 +74,21 @@ const ReceiptData = ({ receipt }) => {
     );
   };
 
+  const onTotalChangeHandler = (itemId, total) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, total: +total } : item
+      )
+    );
+  };
+
+  useEffect(() => {
+    const newTotal = items
+      .filter((item) => item.total)
+      .reduce((acc, item) => acc + item.total, 0);
+    setTotal(newTotal);
+  }, [items]);
+
   const onReceiptSaveHandler = () => {
     const apiClient = new ApiClient(accessToken);
     const groupedItems = items.reduce((acc, item) => {
@@ -118,7 +134,7 @@ const ReceiptData = ({ receipt }) => {
       <Paper elevation={2} sx={{ p: 4, m: "auto", maxWidth: 800 }}>
         <Stack spacing={2}>
           <ReceiptDataSummary
-            receipt={receipt}
+            total={total}
             categories={categories}
             date={date}
             onReceiptCategoryChangeHandler={onReceiptCategoryChangeHandler}
@@ -130,6 +146,7 @@ const ReceiptData = ({ receipt }) => {
             items={items}
             categories={categories}
             onCategoryChangeHandler={onCategoryChangeHandler}
+            onTotalChangeHandler={onTotalChangeHandler}
             isMobile={isMobile}
           />
         </Stack>

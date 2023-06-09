@@ -12,7 +12,7 @@ import useInput from "../../hooks/use-input";
 import { formatCurrency } from "../../util/money-util";
 
 const ReceiptDataSummary = ({
-  receipt,
+  total,
   categories,
   date,
   onReceiptCategoryChangeHandler,
@@ -25,7 +25,6 @@ const ReceiptDataSummary = ({
     (value) => value,
     date.toISOString().split("T")[0]
   );
-  const { total } = receipt;
   const subcategories = useMemo(() => {
     const category = categories.find(
       (category) => category.name === categoryInput.value

@@ -1,21 +1,33 @@
 import {
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { formatCurrency } from "../../util/money-util";
+import { getCurrencySymbol } from "../../util/money-util";
+import useInput from "../../hooks/use-input";
 
-const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
+const ReceiptDataItem = ({
+  item,
+  categories,
+  onCategoryChangeHandler,
+  onTotalChangeHandler,
+}) => {
   const subcategories = useMemo(() => {
     const category = categories.find(
       (category) => category.name === item.category
     );
     return category ? category.subcategories : [];
   }, [item.category, categories]);
+  const totalInput = useInput(
+    (value) => value && value >= 0,
+    `${item.total / 100}`
+  );
 
   const changeCategoryHandler = (event) => {
     onCategoryChangeHandler(event.target.value, "");
@@ -25,6 +37,10 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
       (subcategory) => subcategory.name === event.target.value
     );
     onCategoryChangeHandler(item.category, subcategory.name, subcategory.id);
+  };
+  const changeTotalHandler = (event) => {
+    totalInput.valueChangeHandler(event);
+    onTotalChangeHandler(Math.round(parseFloat(event.target.value) * 100));
   };
   return (
     <Grid container columnSpacing={2} alignItems="center">
@@ -70,9 +86,24 @@ const ReceiptDataItem = ({ item, categories, onCategoryChangeHandler }) => {
         </FormControl>
       </Grid>
       <Grid xs={2}>
-        <Typography variant="h6" color="primary.dark" sx={{ px: 4 }}>
-          {formatCurrency(item.total)}
-        </Typography>
+        <TextField
+          id="total"
+          label="Total"
+          variant="standard"
+          margin="normal"
+          fullWidth
+          value={totalInput.value}
+          onChange={changeTotalHandler}
+          onBlur={totalInput.inputBlurHandler}
+          error={totalInput.hasError}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                {getCurrencySymbol()}
+              </InputAdornment>
+            ),
+          }}
+        />
       </Grid>
     </Grid>
   );
