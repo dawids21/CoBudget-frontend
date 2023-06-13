@@ -35,9 +35,7 @@ const AddEntryDialog = (props) => {
     (value) => (value && value === "expense") || value === "income",
     "expense"
   );
-  const amountInput = useInput(
-    (value) => value && value >= 0 && value === value
-  );
+  const amountInput = useInput((value) => value && value >= 0);
   const dateInput = useInput(
     (value) => value,
     new Date().toISOString().split("T")[0]

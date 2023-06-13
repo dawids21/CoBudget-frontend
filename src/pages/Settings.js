@@ -1,11 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Container, Grid, Typography } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useState } from "react";
 import CategoryContent from "../components/Settings/CategoryContent";

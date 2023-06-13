@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import React from "react";
 import { formatCurrency } from "../../util/money-util";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";

@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useCallback, useEffect, useState } from "react";
 import AddEntryButton from "../components/Calendar/AddEntryButton";

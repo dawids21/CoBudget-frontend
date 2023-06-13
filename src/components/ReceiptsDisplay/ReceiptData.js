@@ -1,7 +1,7 @@
 import { Button, Container, Divider, Paper, Stack, useMediaQuery } from "@mui/material";
 import ReceiptDataSummary from "./ReceiptDataSummary";
 import ReceiptDataItems from "./ReceiptDataItems";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ApiClient from "../../util/api-client";
 import { useOktaAuth } from "@okta/okta-react";
 import useSnackbar from "../../hooks/use-snackbar";
@@ -29,7 +29,7 @@ const ReceiptData = ({ receipt }) => {
   // @ts-ignore
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  const validateItems = () => {
+  const validateItems = useCallback(() => {
     const valid = items.every(
       (item) =>
         item.category !== "" &&
@@ -38,11 +38,11 @@ const ReceiptData = ({ receipt }) => {
     );
     const dateValid = date !== null;
     setIsValid(valid && dateValid);
-  };
+  }, [items, date]);
 
   useEffect(() => {
     validateItems();
-  }, [items, date]);
+  }, [validateItems]);
 
   const onReceiptCategoryChangeHandler = (
     category,

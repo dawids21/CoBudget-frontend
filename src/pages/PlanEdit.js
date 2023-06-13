@@ -1,4 +1,4 @@
-import { Box, Button, Container, Paper } from "@mui/material";
+import { Button, Container, Paper } from "@mui/material";
 import { useOktaAuth } from "@okta/okta-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
